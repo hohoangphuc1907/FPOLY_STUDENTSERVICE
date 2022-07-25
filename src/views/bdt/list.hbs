@@ -1,0 +1,378 @@
+<div class="navbar navbar-inverse set-radius-zero">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">
+                <img src="/media/hello_world.jpg" width="200" class="img-logo" />
+            </a>
+        </div>
+    </div>
+</div>
+<!-- LOGO HEADER END-->
+<section class="menu-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="navbar-collapse collapse ">
+
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- MENU SECTION END-->
+<div class="content-wrapper">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <a class="btn btn-link" href="/dao-tao/chuyen-nganh-hoc/them-moi">Thêm mới</a>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th rowspan="2" scope="col">#</th>
+                            <th rowspan="2" scope="col">MSSV</th>
+                            <th rowspan="2" scope="col">Họ Tên</th>
+                            <th colspan="3" style="text-align: center;">Hiện tại</th>
+                            <th colspan="3" style="text-align: center;">Sau chuyển ngành</th>
+                            <th rowspan="2" scope="col">Time khởi tạo</th>
+                            <th colspan="3" style="text-align: center;">Người khởi tạo</th>
+                            <th rowspan="2" scope="col">Trạng thái</th>
+                            <th rowspan="2" scope="col">Cập nhật lúc</th>
+                            <th rowspan="2" scope="col" class="action">Thao tác</th>
+                        </tr>
+                        <tr>
+                            <th scope="col">Chuyên ngành</th>
+                            <th scope="col">Ngành học</th>
+                            <th scope="col">Học kỳ</th>
+                            <th scope="col">Chuyên ngành</th>
+                            <th scope="col">Ngành học</th>
+                            <th scope="col">Học kỳ</th>
+                            <th scope="col">Đào tạo</th>
+                            <th scope="col">Tài vụ</th>
+                            <th scope="col">Dịch vụ</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbody">
+                        {{#each coursePapers}}
+                        <tr>
+                            <th scope="row">{{index @index}}</th>
+                            <td>{{listVersion this.versions 0}}</td>
+                            <td>{{listVersion this.versions 1}}</td>
+                            <td>{{listVersion this.versions 2}}</td>
+                            <td>{{listVersion this.versions 3}}</td>
+                            <td>{{listVersion this.versions 4}}</td>
+                            <td>{{listVersion this.versions 5}}</td>
+                            <td>{{listVersion this.versions 6}}</td>
+                            <td>{{listVersion this.versions 7}}</td>
+                            <td>{{listVersion this.versions 8}}</td>
+                            <td>{{listVersion this.versions 9}}</td>
+                            <td>{{listVersion this.versions 14}}</td>
+                            <td>{{listVersion this.versions 15}}</td>
+                            <td>
+                                {{listVersion this.versions 10}}
+                            </td>
+                            <td>
+                                <p>{{formatDateTime this.updatedAt}}</p>
+                            </td>
+                            <td class="action">
+                                <button data-toggle="modal" data-target="#myModal" onclick="detail('{{this._id}}')"
+                                    class="btn btn-link">
+                                    <i class="fa fa-info-circle"></i> Chi tiết
+                                </button>
+                                <button class="btn btn-link" id="updatePaper" {{disableButton this.versions}}>
+                                    <a href="/dao-tao/chuyen-nganh-hoc/sua/{{this._id}}" class="fa fa-edit"
+                                    >Sửa</a>
+                                </button>
+                            </td>
+                        </tr>
+                        {{/each}}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--  Modals-->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">Thông tin chi tiết</h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-group " style="display: flex; align-items: center; justify-content: center" id="student-info">
+                    <iframe id="docx-frame" style="border: none; width: 100%;max-width: 900px; margin:auto; height: 70vh" src="/uploads/TVCN.html"></iframe>
+                    <div class="each-history" style="display: none">
+                        <div class="each-item">
+                            <div class="item-label">MSSV</div>
+                            <input class="item-value form-control" readonly id="student-code">
+                        </div>
+                        <div class="each-item">
+                            <div class="item-label">Tên</div>
+                            <input class="item-value form-control" readonly id="student-name">
+                        </div>
+                        <div class="each-item">
+                            <div class="item-label">Khóa học hiện tại</div>
+                            <input class="item-value form-control" readonly id="student-current-course">
+                        </div>
+                        <div class="each-item">
+                            <div class="item-label">Ngành học hiện tại</div>
+                            <input class="item-value form-control" readonly id="student-current-major">
+                        </div>
+                        <div class="each-item">
+                            <div class="item-label">Học kỳ kiện tại</div>
+                            <input class="item-value form-control" readonly id="student-current-semester">
+                        </div>
+                        <div class="each-item">
+                            <div class="item-label">Ngành học yêu cầu</div>
+                            <input class="item-value form-control" readonly id="student-requested-course">
+                        </div>
+                        <div class="each-item">
+                            <div class="item-label">Học kỳ yêu cầu</div>
+                            <input class="item-value form-control" readonly id="student-requested-semester">
+                        </div>
+                        <div class="each-item ">
+                            <div class="item-label">Thời hạn đóng học phí</div>
+                            <input type="datetime-local" disabled class="item-value form-control" id="tuition_deadline"
+                                name="tuition_deadline" />
+                        </div>
+                        <div class="each-item">
+                            <div class="item-label">Lý do yêu cầu</div>
+                            <input class="item-value form-control" readonly id="student-reason">
+                        </div>
+                        <div class="each-item">
+                            <div class="item-label">Môn học</div>
+                            <div id="new-subjects" style="width: 85%;"></div>
+                        </div>
+                        <div class="each-item">
+                            <div class="item-label">Người lập phiếu</div>
+                            <input class="item-value form-control" readonly id="request-accepted-by">
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="form-group modal-footer">
+                <button type="button" class="btn btn-primary" id="buttonAccept" onclick="handleSendTuitionMail(1)">Gửi Mail</button>
+                <button type="button" class="btn btn-primary" id="buttonAccept" onclick="handleDownload(1)">Tải phiếu</button>
+                <button data-dismiss="modal" type="button" class="btn btn-primary">Đóng</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- CONTENT-WRAPPER SECTION END-->
+<section class="footer-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                &copy; 2022 Ít nhưng dài lâu
+            </div>
+        </div>
+    </div>
+</section>
+<script>
+    const _coursePapers = {{{ _coursePapers }}};
+    let modalData = {};
+
+    //*DOWNLOAD
+    function loadFile(url, callback) {
+        PizZipUtils.getBinaryContent(url, callback);
+    }
+
+    const handleDownload = async () => {
+        loadFile(
+            "/uploads/TVCN.docx",
+            function (error, content) {
+                if (error) {
+                    throw error;
+                }
+                var zip = new PizZip(content);
+                var doc = new window.docxtemplater(zip, {
+                    paragraphLoop: true,
+                    linebreaks: true,
+                });
+
+                let tableData = {
+                    request_at: modalData.requested_at,
+                    fullname: modalData.fullname,
+                    current_course: modalData.current_course,
+                    current_semester: modalData.current_semester,
+                    student_code: modalData.student_code,
+                    requested_course: modalData.requested_course,
+                    requested_semester: modalData.requested_semester,
+                    requested_reason: modalData.requested_reason,
+                    request_accepted_reason: modalData.requested_reason,
+                    new_course_semester: modalData.requested_semester,
+                    current_major: modalData.current_major,
+                }
+
+                for(var i = 0; i < 7; i++) {
+                    let planingData = modalData.study_planning[i];
+                    
+                    tableData[`tbl_english_${i}`] = planingData ? planingData[1] : "";
+                    tableData[`tbl_finished_subjects_${i}`] = planingData ? planingData[2] : "";
+                    tableData[`tbl_new_subjects_${i}`] = planingData ? planingData[3] : "";
+                    tableData[`tbl_retake_subjects_${i}`] = planingData ? planingData[4] : "";
+                    tableData[`tbl_fee_${i}`] = planingData ? planingData[5] : "";
+                }
+
+                // Render the document (Replace {first_name} by John, {last_name} by Doe, ...)
+                doc.render(tableData);
+
+                var out = doc.getZip().generate({
+                    type: "blob",
+                    mimeType:
+                        "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+                    // compression: DEFLATE adds a compression step.
+                    // For a 50MB output document, expect 500ms additional CPU time
+                    compression: "DEFLATE",
+                });
+                // Output the document using Data-URI
+                saveAs(out, "output.docx");
+            }
+        );
+    }
+
+    //*MAIL
+    const handleSendTuitionMail = async () => {
+        const option = {
+            method: 'post',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                email: modalData.email,
+                name: document.getElementById('student-name').value,
+                tuition_deadline: document.getElementById('tuition_deadline').value,
+            })
+        }
+
+        const url = `/api/papers/dao-tao/gui-mail-hoc-phi`;
+
+        try {
+            await fetchAPI(url, option);
+            swal(`Thông báo`, `Gửi mail thành công`, `success`);
+        } catch (e) { swal(`Lỗi: ${e.message}`) }
+    }
+
+
+    //const index = _coursePapers.data.version.length - 1;
+    const detail = async (_id) => {
+        const option = {
+            method: 'get',
+            headers: { 'Content-Type': 'application/json' }
+        }
+        const url = `/api/papers/${_id}/chuyen-nganh-hoc/`
+
+        try {
+            const res = await fetchAPI(url, option);
+            fillData(res)
+        } catch (e) { swal(`Lỗi: ${e.message}`) }
+
+    }
+
+    const fetchAPI = async (url, option) => {
+        const res = await fetch(url, option);
+        return res.json();
+    }
+
+    const fillData = (res) => {
+        const index = res.data.versions.length;
+        const { createdAt, current_course, current_major, current_semester,
+            finance_accepted_at, fullname, new_course_semester, new_course_subjects,
+            paper_result_at, paper_status, request_accepted_at,
+            requested_at, requested_course, requested_reason, requested_semester,
+            student_code, updatedAt, fee_accepted_by, education_updated_by, tuition_deadline} = res.data.versions[index - 1];
+        const {_id } = res.data;
+
+        tableData = res.data.versions[index-1].study_planning?.map(item => {
+            return [
+                `${item.semester} \n ${item.status} \n ${item.semester_fee} ₫`,
+                `${item.english?.level} ${item.english?.fee ? (item.english?.fee + "₫") : ""}`,
+                item.finished_subjects?.map(item => {
+                    return `${item.name} - ${item.fee} ₫\n`;
+                }).join(", "),
+                item.new_subjects?.map(item => {
+                    return `${item.name} - ${item.fee} ₫\n`;
+                }).join(", "),
+                item.retest_subjects?.map(item => {
+                    return `${item.name} - ${item.fee} ₫\n`;
+                }).join(", "),
+                `Tổng chi phí:\n${item.semester_fee} ₫`,
+            ]
+        });
+
+        modalData = {
+            ...res.data.versions[index-1],
+            study_planning: [...tableData]
+        };
+        
+        document.getElementById('student-code').value = student_code;
+        document.getElementById('student-name').value = fullname;
+        document.getElementById('student-current-course').value = current_course;
+        document.getElementById('student-current-major').value = current_major;
+        document.getElementById('student-current-semester').value = current_semester;
+        document.getElementById('student-requested-course').value = requested_course;
+        document.getElementById('student-requested-semester').value = requested_semester;
+        document.getElementById('student-reason').value = requested_reason;
+        document.getElementById('request-accepted-by').value = education_updated_by?.name;
+        document.getElementById('tuition_deadline').value = tuition_deadline;
+
+        {{!-- let element = document.getElementById('new-subjects');
+        let html = '';
+        for (let i = 0; i < new_course_subjects.length; i++) {
+            let item = new_course_subjects[i];
+            html += `
+                <input style="width:50%" class="item-value form-control" readonly 
+                value="${item.code} - ${new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(item.fee)}" />
+            `
+        }
+        element.innerHTML = html; --}}
+
+        //*FIll to iFrame
+        let html = $("#docx-frame").contents().find("body").html();
+
+        let docxData = {
+            request_at: modalData.requested_at,
+            fullname: modalData.fullname,
+            current_course: modalData.current_course,
+            current_semester: modalData.current_semester,
+            student_code: modalData.student_code,
+            requested_course: modalData.requested_course,
+            requested_semester: modalData.requested_semester,
+            requested_reason: modalData.requested_reason,
+            request_accepted_reason: modalData.requested_reason,
+            new_course_semester: modalData.requested_semester,
+            current_major: modalData.current_major,
+        }
+
+        for(var i = 0; i < 7; i++) {
+            let planingData = modalData.study_planning[i];
+            
+            docxData[`tbl_english_${i}`] = planingData ? planingData[1] : "";
+            docxData[`tbl_finished_subjects_${i}`] = planingData ? planingData[2] : "";
+            docxData[`tbl_new_subjects_${i}`] = planingData ? planingData[3] : "";
+            docxData[`tbl_retake_subjects_${i}`] = planingData ? planingData[4] : "";
+            docxData[`tbl_fee_${i}`] = planingData ? planingData[5] : "";
+        }
+
+        Object.keys(docxData).forEach(key => {
+            html = html.replace(`{${key}}`, docxData[key]);
+        });
+
+        $("#docx-frame").contents().find("body").html(html);
+    }
+
+</script>

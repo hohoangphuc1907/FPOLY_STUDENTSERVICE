@@ -1,0 +1,157 @@
+<div class="navbar navbar-inverse set-radius-zero">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">
+                <img src="/media/hello_world.jpg" width="200" class="img-logo" />
+            </a>
+        </div>
+    </div>
+</div>
+<!-- LOGO HEADER END-->
+<section class="menu-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="navbar-collapse collapse ">
+
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- MENU SECTION END-->
+<div class="content-wrapper">
+    <div class="container-md">
+        <div class="row" style="margin: 0 auto;">
+            <div class="col-md-2"></div>
+            <div class="col-md-8">
+                <h1 style="margin-bottom:30px;">Cập nhật sinh viên</h4>
+                <form role="form" action="/users/sinh-vien/{{Onestudent._id}}/update" method="post">
+                    <div class="form-group ">
+                        <label class="control-label" for="course_name">MSSV<span id="fullname-check"></span></label>
+                        <input class="form-control" type="text" value="{{Onestudent.MSSV}}"
+                            name="MSSV" id="MSSV" />
+                    </div>
+                    <div class="form-group ">
+                        <label class="control-label" for="course_name">Tên sinh viên<span id="fullname-check"></span></label>
+                        <input class="form-control" type="text" value="{{Onestudent.name}}"
+                            name="name" id="name" />
+                    </div>
+                    <div class="form-group ">
+                        <label class="control-label" for="course_name">Email<span id="fullname-check"></span></label>
+                        <input class="form-control" type="text" value="{{Onestudent.email}}"
+                            name="email" id="email" />
+                    </div>
+                    <div class="form-group ">
+                        <label class="control-label" for="course_name">Ngành<span id="fullname-check"></span></label>
+                        <input class="form-control" type="text" value="{{Onestudent.Nganh}}"
+                            name="Nganh" id="Nganh" />
+                    </div>
+                    <div class="form-group ">
+                        <label class="control-label" for="course_name">Chuyên ngành<span id="fullname-check"></span></label>
+                        <input class="form-control" type="text" value="{{Onestudent.ChuyenNganh}}"
+                            name="ChuyenNganh" id="ChuyenNganh" />
+                    </div>
+                    <div class="form-group ">
+                        <label class="control-label" for="course_name">Kỳ<span id="fullname-check"></span></label>
+                        <input class="form-control" type="text" value="{{Onestudent.Ky}}"
+                            name="Ky" id="Ky" />
+                    </div>
+                    <div class="form-group modal-footer">
+                        <a href="/dich-vu-sinh-vien/chuyen-nganh-hoc" class="btn btn-default">Quay lại</a>
+                        <button id="buttonSave" onclick="onSave()" type="button"
+                            class="btn btn-primary">Lưu</button>
+                    </div>
+                </form>
+            </div>
+            <div class="col-md-2"></div>
+        </div>
+    </div>
+</div>
+
+
+
+<!-- CONTENT-WRAPPER SECTION END-->
+<section class="footer-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                &copy; 2022 Ít nhưng dài lâu
+            </div>
+        </div>
+    </div>
+</section>
+<script>
+     const _Onestudent = {{{ _Onestudent }}};
+    const MSSV = document.getElementById('MSSV');
+    const Name = document.getElementById('name');
+    const Email = document.getElementById('email');
+    const Nganh = document.getElementById('Nganh');
+    const ChuyenNganh = document.getElementById('ChuyenNganh');
+    const Ky = document.getElementById('Ky');
+   
+    const checkString = (value, type) => {
+        if (value && value.trim().length > 0) {
+            checkType[type].status = true;
+            checkType[type].ele.innerHTML = '<span class="glyphicon glyphicon-ok"></span>'
+        } else {
+            checkType[type].status = false;
+            checkType[type].ele.innerHTML = ' <span class="glyphicon glyphicon-remove"></span>'
+        }
+        isFormValid = Object.keys(checkType).every(key => checkType[key].status);
+        buttonSave.disabled = !isFormValid
+    }
+    
+    const course_name = document.getElementById('course_name');
+    const fetchAPI = async (url, option) => {
+        const res = await fetch(url, option);
+        return res.json();
+    }
+    const onSave = async () => {
+        
+        swal("Xác nhận ?", {
+            buttons: {
+                cancel: "Hủy",
+                confirm: 'Xác nhận',
+            },
+        })
+            .then(async (value) => {
+                const url = `/api/users/sinh-vien/sua`;
+
+                const body = {
+                    idStudent: _Onestudent._id,
+                    MSSV: MSSV.value,
+                    name: Name.value,
+                    email: Email.value,
+                    Nganh: Nganh.value,
+                    ChuyenNganh: ChuyenNganh.value,
+                    Ky: Ky.value,
+                }
+
+                const option = {
+                    method: 'put',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(body)
+                }
+                try {
+                    const result = await fetchAPI(url, option);
+                    if(result.error == false) {
+                        window.location = '/users/sinh-vien/list';
+                    }
+
+                } catch (e) { swal(`Lỗi: ${e.message}`); }
+            })
+    }
+
+
+
+
+
+
+
+</script>

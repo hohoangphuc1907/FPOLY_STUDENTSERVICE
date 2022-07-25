@@ -1,0 +1,806 @@
+<div class="navbar navbar-inverse set-radius-zero">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">
+                <img src="/media/hello_world.jpg" width="200" class="img-logo" />
+            </a>
+        </div>
+    </div>
+</div>
+<!-- LOGO HEADER END-->
+<section class="menu-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="navbar-collapse collapse ">
+
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- MENU SECTION END-->
+<div class="content-wrapper">
+    <div class="container-md">
+        <div class="row" style="margin: 0 auto;">
+            <div class="col-md-2"></div>
+            <div class="col-md-8">
+
+                <form role="form" action="/dao-tao/them-moi/:id" method="post">
+                    <h2>Thông tin chung</h2>
+                    <div class="form-group ">
+                        <label class="control-label" for="name">Ngày đề nghị</label>
+                        <input disabled type="datetime-local" class="form-control" id="requested_at"
+                            name="requested_at" />
+                    </div>
+                    <div class="form-group ">
+                        <label class="control-label" for="student_code">Mã sinh viên</label>
+                        <input class="form-control" onchange="onChangeStudentCode(this.value)" type="text"
+                            name="student_code" id="student_code" />
+                    </div>
+                    <div class="form-group ">
+                        <label class="control-label" for="fullname">Họ và tên</label>
+                        <input class="form-control" type="text" name="fullname" id="fullname" />
+                    </div>
+                    <div class="form-group ">
+                        <label class="control-label" for="email">Email</label>
+                        <input class="form-control" type="text" name="email" id="email" />
+                    </div>
+                    <div class="form-group ">
+                        <label class="control-label" for="requested_reason">Lý do chuyển ngành</label>
+                        <textarea class="form-control" type="text" name="requested_reason"
+                            id="requested_reason"></textarea>
+                    </div>
+                    <h2>Hiện tại</h2>
+                    <div class="form-group ">
+                        <label class="control-label" for="current_semester">Kỳ hiện tại đang học tập</label>
+                        <input class="form-control" type="text" name="current_semester" id="current_semester" />
+                    </div>
+                    <div class="form-group ">
+                        <label class="control-label">Ngành đang học</label>
+                        <select class="form-control" id="current_course" name="current_course"
+                            onchange="onSelectCourse(this.value, 1)">
+
+                        </select>
+                    </div>
+                    <div class="form-group ">
+                        <label class="control-label">Chuyên ngành hẹp</label>
+                        <select class="form-control" id="current_major" name="current_major">
+
+                        </select>
+                    </div>
+                    <h2>Sau chuyển ngành</h2>
+                    <div class="form-group ">
+                        <label class="control-label" for="requested_semester">Từ học kỳ</label>
+                        <input class="form-control" type="text" name="requested_semester" id="requested_semester" />
+                    </div>
+                    <div class="form-group ">
+                        <label class="control-label">Ngành đề nghị chuyển đến</label>
+                        <select class="form-control" id="requested_course" name="requested_course"
+                            onchange="onSelectCourse(this.value, 2)">
+
+                        </select>
+                    </div>
+                    <div class="form-group ">
+                        <label class="control-label">Chuyên ngành hẹp mới</label>
+                        <select class="form-control" id="requested_major" name="requested_major">
+
+                        </select>
+                    </div>
+                    <div class="form-group ">
+                        <label class="control-label" for="start_at_semester">Học kỳ bắt đầu chuyển</label>
+                        <input class="form-control" type="text" name="start_at_semester" id="start_at_semester" />
+                    </div>
+                    <h2>Kế hoạch học tập</h2>
+                    <div class="form-group ">
+                        <button id="buttonAddSem" onclick="onAddSem()" data-target="#modalAddSem" data-toggle="modal"
+                            type="button" class="btn btn-link">Thêm học kỳ</button>
+
+                    </div>
+                    <div class="form-group">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Học kỳ</th>
+                                    <th>Level Tiếng Anh</th>
+                                    <th>Mã môn học được miễn/quy đổi tương đương</th>
+                                    <th>Mã môn học bổ sung</th>
+                                    <th>Mã môn học lại</th>
+                                    <th>Mã môn thi lại</th>
+                                    <th>Học phí phải nộp</th>
+                                    <th>Thao tác</th>
+                                </tr>
+                            </thead>
+                            <tbody id="semester-list">
+                                <tr>
+                                    <td>...</td>
+                                    <td>...</td>
+                                    <td>...</td>
+                                    <td>...</td>
+                                    <td>...</td>
+                                    <td>...</td>
+                                    <td>...</td>
+                                    <td>...</td>
+                                </tr>
+                                <tr>
+                                    <td>...</td>
+                                    <td>...</td>
+                                    <td>...</td>
+                                    <td>...</td>
+                                    <td>...</td>
+                                    <td>...</td>
+                                    <td>...</td>
+                                    <td>...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+
+
+                    <div class="form-group modal-footer">
+                        <a href="/dao-tao/chuyen-nganh-hoc" class="btn btn-default">Quay lại</a>
+                        <button id="buttonSave" onclick="onSave()" type="button" class="btn btn-primary">Lưu</button>
+                    </div>
+                </form>
+            </div>
+            <div class="col-md-2"></div>
+        </div>
+    </div>
+</div>
+
+
+
+<!-- CONTENT-WRAPPER SECTION END-->
+<section class="footer-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                &copy; 2022 Ít nhưng dài lâu
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+<div class="modal fade" id="modalAddSem" tabindex="-1" role="dialog" aria-labelledby="modalAddSemLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" style="overflow-y: scroll;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="modalAddSemLabel">Thông tin kỳ học</h4>
+            </div>
+            <div class="modal-body">
+                <form id="course_form">
+                    <div class="row">
+                        <div class="form-group col-md-4">
+                            <label for="form_semester">Kỳ học</label>
+                            <select class="form-control" id="form_semester">
+
+                            </select>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="form_semester_status">Trạng thái tại ngành mới</label>
+                            <select class="form-control" id="form_semester_status">
+                            </select>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="form_semester_fee">Phí học kỳ</label>
+                            <input readonly type="text" class="form-control" id="form_semester_fee" />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-md-4">
+                            <label for="form_english_level">Level Tiếng Anh</label>
+                            <select class="form-control" id="form_english_level">
+                            </select>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="form_english_status">Tình trạng</label>
+                            <select class="form-control" id="form_english_status">
+                            </select>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="form_english_fee">Mức phí</label>
+                            <select class="form-control" id="form_english_fee">
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group ">
+                        <label class="control-label" for="new_course_subjects_input">Môn miễn giảm
+                            <span class="btn btn-link" onclick="initModal(1)" data-target="#myModal"
+                                data-toggle="modal">Chọn</span>
+                        </label>
+
+                        <ul id="finished-subjects">
+
+                        </ul>
+                    </div>
+                    <div class="form-group ">
+                        <label class="control-label" for="new_course_subjects_input">Môn bổ sung
+                            <span class="btn btn-link" onclick="initModal(2)" data-target="#myModal"
+                                data-toggle="modal">Chọn</span>
+                        </label>
+
+                        <ul id="new-subjects">
+
+                        </ul>
+                    </div>
+                    <div class="form-group ">
+                        <label class="control-label" for="new_course_subjects_input">Môn học lại
+                            <span class="btn btn-link" onclick="initModal(3)" data-target="#myModal"
+                                data-toggle="modal">Chọn</span>
+                        </label>
+
+                        <ul id="retake-subjects">
+
+                        </ul>
+                    </div>
+                    <div class="form-group ">
+                        <label class="control-label" for="new_course_subjects_input">Môn thi lại
+                            <span class="btn btn-link" onclick="initModal(4)" data-target="#myModal"
+                                data-toggle="modal">Chọn</span>
+                        </label>
+
+                        <ul id="retest-subjects">
+
+                        </ul>
+                    </div>
+
+
+
+                </form>
+            </div>
+            <div class="form-group modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
+                <button onclick="onSaveSemester()" data-dismiss="modal" type="button"
+                    class="btn btn-primary">Chọn</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">Danh sách môn học</h4>
+            </div>
+            <div class="modal-body text-center">
+                <form id="course_form">
+                    <div class="new_subjects_container" id="new_subjects_container">
+                    </div>
+                </form>
+            </div>
+            <div class="form-group modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
+                <button onclick="onChooseSubjects()" data-dismiss="modal" type="button"
+                    class="btn btn-primary">Chọn</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<script>
+
+    let version = {
+        "requested_at": new Date(),
+        "student_code": "", // mã sinh viên
+        "fullname": "", // họ tên
+        "email": "", // email
+        "current_semester": "", // kỳ hiện tại
+        "current_course": "", // ngành hiện tại
+        "current_major": "", // ngành hiện tại
+        "requested_reason": "", // lý do chuyển ngành
+        "requested_course": "", // ngành chuyển đến
+        "requested_major": "", // ngành chuyển đến
+        "requested_semester": "", // kỳ thứ tại ngành mới
+        "start_at_semester": "", // học kỳ bắt đầu chuyển
+        "study_planning": [ // kế hoạch học tập
+
+        ],
+    }
+
+    let studyPlanning = {
+        "semester": "", // kỳ học
+        "status": "", // trạng thái kỳ
+        "semester_fee": 0, // phí học kỳ
+        "english": {
+            "level": "", // level tiếng anh
+            "status": "", // trạng thái
+            "fee": "" // mức phí
+        },
+        "finished_subjects": [ // môn miễn giảm
+
+        ],
+        "new_subjects": [ // môn bổ sung
+
+        ],
+        "retake_subjects": [ // môn học lại
+
+        ],
+        "retest_subjects": [ // môn thi lại
+
+        ]
+    }
+
+    let subjectType = null;
+    let courseFee = 0;
+
+    let _subjects = {{{ _subjects }}};
+    let _courses = {{{ _courses }}};
+    let _semesterProps = {{{ _semesterProps }}};
+    let _englishProps = {{{ _englishProps }}};
+
+
+    let studentCodePattern = /^PS[0-9]{5}$/;
+
+    const requestedAtInput = document.getElementById('requested_at');
+    const studentCodeInput = document.getElementById('student_code');
+    const fullnameInput = document.getElementById('fullname');
+    const currentSemesterInput = document.getElementById('current_semester');
+    const currentCourseInput = document.getElementById('current_course');
+    const currentMajorInput = document.getElementById('current_major');
+    const requestedCourseInput = document.getElementById('requested_course');
+    const requestedMajorInput = document.getElementById('requested_major');
+    const requestedSemesterInput = document.getElementById('requested_semester');
+    const requestedReasonInput = document.getElementById('requested_reason');
+
+    const newSubjectsContainer = document.getElementById('new_subjects_container');
+
+
+    const fetchAPI = async (url, option) => {
+        const res = await fetch(url, option);
+        return res.json();
+    }
+
+    const formatDate = (a, type) => {
+        let date = new Date(a);
+        let month = date.getMonth() + 1;
+        let year = date.getFullYear();
+        month = month.toString().length === 1 ? '0' + month : month;
+        let day = date.getDate().toString().length === 1 ?
+            '0' + date.getDate().toString() : date.getDate().toString();
+        if (type == 1) {
+            return day + '-' + month + '-' + year;
+        }
+        let h = date.getHours();
+        let m = date.getMinutes();
+        h = h.toString().length === 1 ? '0' + h : h;
+        m = m.toString().length === 1 ? '0' + m : m;
+        return year + '-' + month + '-' + day + 'T' + h + ':' + m;
+    }
+
+    requestedAtInput.value = formatDate(new Date(), 2);
+
+
+    // modal add subjects
+    const initModal = (type = 1) => {
+        subjectType = type;
+        let html = '';
+        for (let i = 0; i < _subjects.length; i++) {
+            const c = _subjects[i];
+            html += `
+                <div class="form-check new_course_item">
+                    <input class="form-check-input" type="checkbox" id="check${c.code}" name="new_courses"
+                        value="${c.code}">
+                    <label class="form-check-label" for="check${c.code}">
+                        <span>${c.code}</span> - <span>${new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(c.fee)}</span>
+                    </label>
+                </div>
+            `
+        }
+        newSubjectsContainer.innerHTML = html;
+    }
+
+    const onChooseSubjects = () => {
+        switch (subjectType) {
+            case 1:
+                studyPlanning.finished_subjects = [];
+                break;
+            case 2:
+                studyPlanning.new_subjects = [];
+                break;
+            case 3:
+                studyPlanning.retake_subjects = [];
+                break;
+            case 4:
+                studyPlanning.retest_subjects = [];
+                break;
+        }
+        const new_courses = document.getElementsByName("new_courses");
+        for (let i = 0; i < new_courses.length; i++) {
+            let item = new_courses[i];
+            if (item.checked) {
+                add(item.value)
+            }
+        }
+
+    }
+
+    const add = (code) => {
+        if (code.trim().length == 0) return;
+        let item = _subjects.find(x => x.code === code);
+        if (!item) return;
+        let { fee } = item;
+
+        switch (subjectType) {
+            case 1:
+                studyPlanning.finished_subjects.push({ name: code, fee: fee });
+                renderSubjects(studyPlanning.finished_subjects, 'finished-subjects');
+                break;
+            case 2:
+                studyPlanning.new_subjects.push({ name: code, fee: fee });
+                renderSubjects(studyPlanning.new_subjects, 'new-subjects');
+                break;
+            case 3:
+                studyPlanning.retake_subjects.push({ name: code, fee: fee });
+                renderSubjects(studyPlanning.retake_subjects, 'retake-subjects');
+                break;
+            case 4:
+                studyPlanning.retest_subjects.push({ name: code, fee: fee });
+                renderSubjects(studyPlanning.retest_subjects, 'retest-subjects');
+                break;
+        }
+    }
+
+    const remove = (type, name) => {
+        switch (type) {
+            case 1:
+                studyPlanning.finished_subjects = studyPlanning.finished_subjects.filter(item => item.name != name);
+                renderSubjects(studyPlanning.finished_subjects, 'finished-subjects');
+                break;
+            case 2:
+                studyPlanning.new_subjects = studyPlanning.new_subjects.filter(item => item.name != name);
+                renderSubjects(studyPlanning.new_subjects, 'new-subjects');
+                break;
+            case 3:
+                studyPlanning.retake_subjects = studyPlanning.retake_subjects.filter(item => item.name != name);
+                renderSubjects(studyPlanning.retake_subjects, 'retake-subjects');
+                break;
+            case 4:
+                studyPlanning.retest_subjects = studyPlanning.retest_subjects.filter(item => item.name != name);
+                renderSubjects(studyPlanning.retest_subjects, 'retest-subjects');
+                break;
+        }
+    }
+
+    const renderSubjects = (array, id) => {
+        const ul = document.getElementById(id);
+        ul.innerHTML = '';
+        array.forEach(item => {
+            const li = document.createElement('li');
+            li.innerHTML = `<span class="btn">${item.name}</span> -
+                            <span>${new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(item.fee)}</span>
+                            -<span class="btn btn-link"  onclick="remove(${subjectType}, '${item.name}')">Xoá</span>`;
+            ul.appendChild(li);
+        });
+    }
+    // save one semester
+    const onSaveSemester = () => {
+        studyPlanning.semester = $('#form_semester').val();
+        studyPlanning.status = $('#form_semester_status').val();
+        studyPlanning.semester_fee = $('#form_semester_fee').val();
+
+        if ($('#form_english_level').val() == _englishProps.levels[0].value) {
+            studyPlanning.english.status = '';
+            studyPlanning.english.level = '';
+            studyPlanning.english.fee = '';
+        } else {
+            studyPlanning.english.status = $('#form_english_status').val();
+            studyPlanning.english.level = $('#form_english_level').val();
+            studyPlanning.english.fee = $('#form_english_fee').val();
+        }
+
+        version.study_planning.push(studyPlanning);
+        console.log(version);
+        renderSemester();
+    }
+
+    const renderSemester = () => {
+        let html = '';
+        if (version.study_planning.length == 0) {
+            html += `
+                <tr>
+                                    <td>...</td>
+                                    <td>...</td>
+                                    <td>...</td>
+                                    <td>...</td>
+                                    <td>...</td>
+                                    <td>...</td>
+                                    <td>...</td>
+                                    <td>...</td>
+                                </tr>
+                                <tr>
+                                    <td>...</td>
+                                    <td>...</td>
+                                    <td>...</td>
+                                    <td>...</td>
+                                    <td>...</td>
+                                    <td>...</td>
+                                    <td>...</td>
+                                    <td>...</td>
+                                </tr>
+            `
+            $('#semester-list').html(html);
+            return;
+        }
+        for (let i = 0; i < version.study_planning.length; i++) {
+            let plan = version.study_planning[i];
+            let total = Number(plan.semester_fee) + Number(plan.english.fee);
+
+            // môn miễn giảm
+            let finished_html = '';
+            for (let j = 0; j < plan.finished_subjects.length; j++) {
+                const subject = plan.finished_subjects[j];
+                total -= Number(subject.fee);
+                finished_html += `<p>${subject.name} - ${formatCurrency(subject.fee)}</p>`
+            }
+
+            let new_html = '';
+            for (let j = 0; j < plan.new_subjects.length; j++) {
+                const subject = plan.new_subjects[j];
+                total += Number(subject.fee);
+                new_html += `<p>${subject.name} - ${formatCurrency(subject.fee)}</p>`
+            }
+
+            let retake_html = '';
+            for (let j = 0; j < plan.retake_subjects.length; j++) {
+                const subject = plan.retake_subjects[j];
+                total += Number(subject.fee);
+                retake_html += `<p>${subject.name} - ${formatCurrency(subject.fee)}</p>`
+            }
+
+            let retest_html = '';
+            for (let j = 0; j < plan.retest_subjects.length; j++) {
+                const subject = plan.retest_subjects[j];
+                total += Number(subject.fee);
+                retest_html += `<p>${subject.name} - ${formatCurrency(subject.fee)}</p>`
+            }
+
+            html += `
+                <tr>
+                    <td>
+                        <p>${plan.semester}</p>
+                        <p>${plan.status}</p>
+                        <p>${formatCurrency(plan.semester_fee)}</p>
+                    </td>
+                    <td>
+                        <p>${plan.english.status}</p>
+                        <p>${plan.english.level}</p>
+                        <p>${formatCurrency(plan.english.fee)}</p>
+                    </td>
+                    <td>${finished_html}</td >
+                    <td>${new_html} </td>
+                    <td>${retake_html}</td>
+                    <td>${retest_html}</td>
+                    <td><p>Tổng chi phí: ${formatCurrency(total)}</p></td>
+                    <td>
+                        <button class="btn btn-link" onclick="removeSemester(${i})">Xoá</button>
+                    </td>
+                </tr >
+        `
+        }
+        $('#semester-list').html(html);
+    }
+
+    const removeSemester = (index) => {
+        version.study_planning.splice(index, 1);
+        renderSemester();
+    }
+
+    const onSave = async () => {
+        let student_code = $('#student_code').val();
+        let fullname = $('#fullname').val();
+        let email = $('#email').val();
+        let current_semester = $('#current_semester').val();
+        let requested_reason = $('#requested_reason').val();
+        let requested_semester = $('#requested_semester').val();
+        let start_at_semester = $('#start_at_semester').val();
+        if (!student_code || !fullname || !email || !current_semester || !requested_reason || !requested_semester || !start_at_semester) {
+            swal("Lỗi", "Vui lòng nhập đủ thông tin", "error");
+            return;
+        }
+
+        swal("Xác nhận tạo phiếu đề nghị chuyển ngành học?", {
+            buttons: {
+                cancel: "Hủy",
+                confirm: 'Xác nhận',
+            },
+        })
+            .then(async (value) => {
+
+                const url = `/api/papers/dao-tao/chuyen-nganh-hoc/`;
+                version = {
+                    "requested_at": new Date(),
+                    "student_code": $('#student_code').val(), // mã sinh viên
+                    "fullname": $('#fullname').val(), // họ tên
+                    "email": $('#email').val(), // email
+                    "current_semester": $('#current_semester').val(), // kỳ hiện tại
+                    "current_course": $('#current_course').val(), // ngành hiện tại
+                    "current_major": $('#current_major').val(), // ngành hiện tại
+                    "requested_reason": $('#requested_reason').val(), // lý do chuyển ngành
+                    "requested_course": $('#requested_course').val(), // ngành chuyển đến
+                    "requested_major": $('#requested_major').val(), // ngành chuyển đến
+                    "requested_semester": $('#requested_semester').val(), // kỳ thứ tại ngành mới
+                    "start_at_semester": $('#start_at_semester').val(), // học kỳ bắt đầu chuyển
+                    "study_planning": version.study_planning
+                }
+                const option = {
+                    method: 'post',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(version)
+                }
+                try {
+                    const result = await fetchAPI(url, option);
+                    if (result.error == false) {
+                        window.location.href = '/dao-tao/chuyen-nganh-hoc'
+                    }
+                    else {
+                        swal("Lỗi", result.message, "error");
+                    }
+                } catch (e) { swal(`Lỗi: ${e.message} `); }
+            })
+    }
+
+    const initAllCourses = () => {
+        let currentCourseHTML = '';
+        let requestedCourseHTML = '';
+        let currentMajorHTML = '';
+        let requestedMajorHTML = '';
+        for (let i = 0; i < _courses.length; i++) {
+            const c = _courses[i];
+            currentCourseHTML += `<option value = "${c.name}" > ${c.name}</option>`
+            requestedCourseHTML += `<option value = "${c.name}" > ${c.name}</option>`
+        }
+
+        for (let i = 0; i < _courses[0].majors.length; i++) {
+            const c = _courses[0].majors[i];
+            currentMajorHTML += ` <option value = "${c.name}" > ${c.name}</option>`
+            requestedMajorHTML += ` <option value = "${c.name}" > ${c.name}</option>`
+        }
+
+        currentCourseInput.innerHTML = currentCourseHTML;
+        currentMajorInput.innerHTML = currentMajorHTML;
+        requestedCourseInput.innerHTML = requestedCourseHTML;
+        requestedMajorInput.innerHTML = requestedMajorHTML;
+
+        courseFee = _courses[0].fee;
+
+    }
+
+    initAllCourses();
+
+    const onSelectCourse = (value, position) => {
+        if (position == 1) {
+            let currentMajorHTML = '';
+            let course = _courses.filter(item => item.name == value)[0];
+            if (course && course.majors) {
+                for (let i = 0; i < course.majors.length; i++) {
+                    const c = course.majors[i];
+                    currentMajorHTML += `<option value = "${c.name}" > ${c.name}</option> `
+                }
+            }
+            currentMajorInput.innerHTML = currentMajorHTML;
+        }
+        else {
+            let requestedMajorHTML = '';
+            let course = _courses.filter(item => item.name == value)[0];
+            if (course && course.majors) {
+                for (let i = 0; i < course.majors.length; i++) {
+                    const c = course.majors[i];
+                    requestedMajorHTML += `<option value = "${c.name}" > ${c.name}</option> `
+                }
+            }
+            requestedMajorInput.innerHTML = requestedMajorHTML;
+            courseFee = course.fee;
+        }
+    }
+
+    const onAddSem = () => {
+        let html = '';
+        for (let i = 0; i < _semesterProps.sems.length; i++) {
+            let check = version.study_planning.filter(item => item.semester.toString() == _semesterProps.sems[i].name.toString()).length > 0;
+            if (check) continue;
+            html += `<option value = "${_semesterProps.sems[i].value}" > ${_semesterProps.sems[i].name}</option> `
+        }
+        $('#form_semester').html(html);
+
+        html = '';
+        for (let i = 0; i < _semesterProps.status.length; i++) {
+            html += `<option value = "${_semesterProps.status[i].value}" > ${_semesterProps.status[i].name}</option> `
+        }
+        $('#form_semester_status').html(html);
+
+        $('#form_semester_fee').val(courseFee);
+
+        html = '';
+        for (let i = 0; i < _englishProps.levels.length; i++) {
+            html += `<option value = "${_englishProps.levels[i].value}" > ${_englishProps.levels[i].name}</option> `
+        }
+        $('#form_english_level').html(html);
+
+        html = '';
+        for (let i = 0; i < _englishProps.status.length; i++) {
+            html += `<option value = "${_englishProps.status[i].value}" > ${_englishProps.status[i].name}</option> `
+        }
+        $('#form_english_status').html(html);
+
+        html = '';
+        for (let i = 0; i < _englishProps.fees.length; i++) {
+            html += `<option value = "${_englishProps.fees[i].value}" > ${_englishProps.fees[i].name}</option>`
+        }
+        $('#form_english_fee').html(html);
+
+        studyPlanning = {
+            "semester": "", // kỳ học
+            "status": "", // trạng thái kỳ
+            "semester_fee": 0, // phí học kỳ
+            "english": {
+                "level": "", // level tiếng anh
+                "status": "", // trạng thái
+                "fee": "" // mức phí
+            },
+            "finished_subjects": [ // môn miễn giảm
+
+            ],
+            "new_subjects": [ // môn bổ sung
+
+            ],
+            "retake_subjects": [ // môn học lại
+
+            ],
+            "retest_subjects": [ // môn thi lại
+
+            ]
+        }
+        renderSubjects(studyPlanning.finished_subjects, 'finished-subjects');
+        renderSubjects(studyPlanning.new_subjects, 'new-subjects');
+        renderSubjects(studyPlanning.retake_subjects, 'retake-subjects');
+        renderSubjects(studyPlanning.retest_subjects, 'retest-subjects');
+    }
+
+    const formatCurrency = (value) => {
+        return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(value);
+    }
+
+    const onChangeStudentCode = async (code) => {
+        const url = `/api/users/sinh-vien/chi-tiet/${code}`;
+        const option = {
+            method: 'get',
+            headers: { 'Content-Type': 'application/json' },
+        }
+        try {
+            const result = await fetchAPI(url, option);
+            if (result.error == false) {
+                $('#fullname').val(result.data.name);
+                $('#email').val(result.data.email);
+            }
+        } catch (e) { swal(`Lỗi: ${e.message} `); }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+</script>
