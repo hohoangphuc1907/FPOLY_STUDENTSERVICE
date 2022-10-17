@@ -20,6 +20,10 @@ class User {
                 'type': String, 
                 'required': false,
             },
+            'current_semester': {
+                'type': String, 
+                'required': false,
+            },
             'avatar': {
                 'type': String,
                 'required': false,

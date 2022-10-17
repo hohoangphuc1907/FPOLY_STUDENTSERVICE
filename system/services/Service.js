@@ -52,7 +52,6 @@ class Service {
     async get( id ) {
         try {
             const item = await this.model.findById( id );
-
             if ( !item ) {
                 const error = new Error( 'Item not found' );
 

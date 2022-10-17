@@ -1,0 +1,229 @@
+<div class="navbar navbar-inverse set-radius-zero">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">
+                <img src="/media/hello_world.jpg" width="200" class="img-logo" />
+            </a>
+        </div>
+    </div>
+</div>
+<!-- LOGO HEADER END-->
+<section class="menu-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="navbar-collapse collapse ">
+
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- MENU SECTION END-->
+<div class="content-wrapper">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <button type="button" class="btn btn-link" data-toggle="modal" data-target="#myModal1">Thêm mới</button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Tên</th>
+                            <th scope="col">Hạn đóng phí</th>
+                            <th style="text-align: center;">Loại</th>
+                            <th style="text-align: center;">Người tạo</th>
+                            <th scope="col">Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbody">
+                        {{#each campaigns}}
+                        <tr>
+                            <th scope="row">{{index @index}}</th>
+                            <td>{{this.name}}</td>
+                            <td>{{formatDate this.time 1}}</td>
+                            <td>{{this.type}}</td>
+                            <td>{{this.createdBy.email}}</td>
+                            <td class="action">
+                                <button class="btn btn-link" onclick="remove('{{this._id}}')">
+                                    <i class="fa fa-recycle"></i> Xóa
+                                </button>
+                                <br>
+                                <button data-toggle="modal" data-target="#myModal1"
+                                    onclick="edit('{{this._id}}', '{{this.name}}', '{{this.time}}', '{{this.type}}')"
+                                    class="btn btn-link"><i class="fa fa-pencil"></i>Sửa
+                                </button>
+                            </td>
+                        </tr>
+                        {{/each}}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--  Modals-->
+<div class="modal fade" id="myModal1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">Thêm mới đợt chuyển ngành</h4>
+            </div>
+            <div class="modal-body">
+                <div class="panel-body">
+                    <form role="form">
+                        <div class="form-group ">
+                            <label class="control-label" for="name">Tên đợt chuyển ngành</label>
+                            <input type="text" class="form-control" id="campaignName" name="campaignName" />
+                            <input type="hidden" class="form-control" id="campaignId" name="campaignId" />
+                        </div>
+                        <div class="form-group ">
+                            <label class="control-label" for="campaignTime">Hạn đóng phí</label>
+                            <input type="date" class="form-control" id="campaignTime" name="campaignTime" />
+                        </div>
+                        <div class="form-group ">
+                            <label class="control-label" for="campaignType">Loại</label>
+                            <select class="form-control" id="campaignType" name="campaignType">
+
+                            </select>
+                        </div>
+                        <div class="form-group modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
+                            <button id="buttonSave" onclick="onSave()" type="button"
+                                class="btn btn-primary">Lưu</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<!-- End Modals-->
+
+<!-- CONTENT-WRAPPER SECTION END-->
+<section class="footer-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                &copy; 2022 Ít nhưng dài lâu
+            </div>
+        </div>
+    </div>
+</section>
+<script>
+
+    const _campaignTypes = {{{ _campaignTypes }}};
+
+    const fetchAPI = async (url, option) => {
+        const res = await fetch(url, option);
+        return res.json();
+    }
+
+
+    const initCampaignTypes = () => {
+        let html = '';
+        _campaignTypes.forEach((item, index) => {
+            html += `<option value="${item.VALUE}">${item.NAME}</option>`;
+        });
+        $("#campaignType").html(html);
+    }
+    initCampaignTypes();
+
+    const onSave = async () => {
+        const name = $('#campaignName').val();
+        const time = $('#campaignTime').val();
+        const type = $('#campaignType').val();
+        const option = {
+            method: 'post',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ name, time, type, department: 1 })
+        }
+        const url = `/api/campaigns`
+
+        try {
+            const res = await fetchAPI(url, option);
+            window.location.reload();
+        } catch (e) { swal(`Lỗi: ${e.message}`) }
+
+    }
+
+    const remove = (id) => {
+        swal("Xác nhận xóa?", {
+            buttons: {
+                cancel: "Hủy",
+                confirm: 'Xác nhận',
+            },
+        })
+            .then(async (value) => {
+                const url = `/api/campaigns/${id}`;
+                const option = {
+                    method: 'delete',
+                    headers: { 'Content-Type': 'application/json' },
+                }
+                try {
+                    const result = await fetchAPI(url, option);
+                    if (result.error == false) {
+                        window.location.reload();
+                    }
+                    else {
+                        swal("Lỗi", result.message, "error");
+                    }
+                } catch (e) { swal(`Lỗi: ${e.message} `); }
+            })
+    }
+
+    const edit = (id, name, time, type) => {
+        $('#campaignId').val(id);
+        $('#campaignName').val(name);
+        $('#campaignTime').val(formatDate(time));
+
+        let html = '';
+        $("#campaignType").html(html);
+        _campaignTypes.forEach((item, index) => {
+            html += type.toString() == item.VALUE.toString() ? `<option selected value="${item.VALUE}">${item.NAME}</option>` : `<option value="${item.VALUE}">${item.NAME}</option>`;
+        });
+        $("#campaignType").html(html);
+
+        $('#buttonSave').attr('onclick', `onUpdate('${id}')`);
+    }
+
+    const onUpdate = async (id) => {
+        const name = $('#campaignName').val();
+        const time = $('#campaignTime').val();
+        const type = $('#campaignType').val();
+        const option = {
+            method: 'put',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ name, time, type })
+        }
+        const url = `/api/campaigns/${id}`
+
+        try {
+            const res = await fetchAPI(url, option);
+            window.location.reload();
+        } catch (e) { swal(`Lỗi: ${e.message}`) }
+
+    }
+
+    const formatDate = (a) => {
+        let now = new Date(a);
+        let day = ("0" + now.getDate()).slice(-2);
+        let month = ("0" + (now.getMonth() + 1)).slice(-2);
+        let today = now.getFullYear() + "-" + (month) + "-" + (day);
+        return today
+    }
+
+
+</script>

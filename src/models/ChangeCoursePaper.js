@@ -16,6 +16,11 @@ class ChangeCoursePaper {
                 ],
                 'required': true,
                 'default': [],
+            },
+            'campaign': {
+                'type': Schema.Types.ObjectId,
+                'required': true,
+                'ref': 'campaign'
             }
         }, { 'timestamps': true });
 

@@ -1,0 +1,160 @@
+<div class="navbar navbar-inverse set-radius-zero">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">
+                <img src="/media/hello_world.jpg" width="200" class="img-logo" />
+            </a>
+        </div>
+    </div>
+</div>
+<!-- LOGO HEADER END-->
+<section class="menu-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="navbar-collapse collapse ">
+
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- MENU SECTION END-->
+<div class="content-wrapper">
+    <div class="container-md">
+        <div class="row" style="margin: 0 auto;">
+            <div class="col-md-2"></div>
+            <div class="col-md-8">
+                <h1>Nhập học trở lại - Nhập học từ đầu</h1>
+                <form role="form">
+                    <h2>Thông tin sinh viên</h2>
+                    <div class="form-group ">
+                        <label class="control-label" for="name">Ngày đề nghị</label>
+                        <input disabled type="datet" class="form-control" id="createdAt" name="createdAt" />
+                    </div>
+                    <div class="form-group ">
+                        <label class="control-label" for="studentCode">Mã sinh viên</label>
+                        <input class="form-control" onchange="studentService_getStudentInfo(this.value)" type="text"
+                            name="studentCode" id="studentCode" />
+                    </div>
+                    <div class="form-group ">
+                        <label class="control-label" for="fullname">Họ và tên</label>
+                        <input class="form-control" type="text" name="fullname" id="fullname" />
+                    </div>
+                    <div class="form-group ">
+                        <label class="control-label" for="email">Email</label>
+                        <input class="form-control" type="text" name="email" id="email" />
+                    </div>
+                    <div class="form-group ">
+                        <label class="control-label">Ngành cũ</label>
+                        <select class="form-control" id="course" name="course" onchange="studentService_onChangeCourse()">
+                        </select>
+                        <input class="form-control" type="hidden" name="courseFee" id="courseFee" />
+                    </div>
+                    <div class="form-group ">
+                        <label class="control-label" for="dropout">Quyết định thôi học</label>
+                        <input class="form-control" type="text" name="dropout" id="dropout" />
+                    </div>
+                    <div class="form-group ">
+                        <label class="control-label">Kỳ thứ thôi học</label>
+                        <select class="form-control" id="dropoutAtSemester" name="dropoutAtSemester">
+                        </select>
+                    </div>
+                    <div class="form-group ">
+                        <label class="control-label" for="rejoinAcademicYear">Khóa nhập học</label>
+                        <input class="form-control" type="text" name="rejoinAcademicYear" id="rejoinAcademicYear" />
+                    </div>
+                    <div class="form-group ">
+                        <label class="control-label" for="mobile">Số điện thoại</label>
+                        <input class="form-control" type="text" name="mobile" id="mobile" />
+                    </div>
+                    <div class="form-group ">
+                        <label class="control-label" for="feeDeadline">Hạn đóng</label>
+                        <input type="date" class="form-control" id="feeDeadline" name="feeDeadline" />
+                    </div>
+                    <div class="form-group modal-footer">
+                        <a href="/dich-vu-sinh-vien/nhap-hoc-tro-lai" class="btn btn-default">Quay lại</a>
+                        <button id="buttonSave" onclick="studentService_onSaveRejoinPaper2()" type="button" class="btn btn-primary">Lưu</button>
+                    </div>
+                </form>
+            </div>
+            <div class="col-md-2"></div>
+        </div>
+    </div>
+</div>
+
+
+
+<!-- CONTENT-WRAPPER SECTION END-->
+<section class="footer-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                &copy; 2022 Ít nhưng dài lâu
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModal" aria-hidden="true">
+    <div class="modal-dialog" style="overflow-y: scroll;">
+        <div class="modal-content" id="modal-content">
+
+        </div>
+    </div>
+</div>
+
+
+<script src="/js/rejoin.js"></script>
+<script>
+    let _courses = {{{ _courses }}};
+    let _oneCampaign = {{{ _oneCampaign }}};
+    let _type = {{{ _type }}};
+    let _rejoinStudentStatus = {{{ _rejoinStudentStatus }}};
+    let _englishProps = {{{ _englishProps }}};
+    let _subjects = {{{ _subjects }}};
+
+
+
+    studentService_initCreatedAt();
+    studentService_initCourses(_courses, true);
+    studentService_initSemesters(rejoinPaper.dropoutAtSemester, 'dropoutAtSemester');
+    studentService_initSemesters(nextPartSecond.rejoinAtSemester, 'rejoinAtSemester');
+    studentService_initCampaign(_oneCampaign);
+    studentService_initRejoinStudentStatus(_rejoinStudentStatus, nextPartSecond.rejoinStudentStatus);
+
+    const initModal = (type) => {
+        switch (type) {
+            case 1:
+                studentService_initEnglish(_englishProps, nextPartSecond.english.level, nextPartSecond.english.fee);
+                break;
+            case 2:
+                studentService_initRetestSubjects(_subjects);
+                break;
+            case 3:
+                studentService_initRetakeSubjects(_subjects);
+                break;
+            case 4:
+                studentService_initNewSubjects(_subjects);
+                break;
+            case 5:
+                studentService_initFinishedSubjects(_subjects);
+                break;
+            case 6:
+                studentService_initExchangeSubjects(_subjects);
+                break;
+        }
+    }
+
+
+
+
+
+
+</script>

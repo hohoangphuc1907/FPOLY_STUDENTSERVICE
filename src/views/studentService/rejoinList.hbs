@@ -1,0 +1,871 @@
+<div class="navbar navbar-inverse set-radius-zero">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">
+                <img src="/media/hello_world.jpg" width="200" class="img-logo" />
+            </a>
+        </div>
+    </div>
+</div>
+<!-- LOGO HEADER END-->
+<section class="menu-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="navbar-collapse collapse ">
+
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- MENU SECTION END-->
+<div class="content-wrapper">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-6">
+                <select class="form-control" id="campaign-list" onchange="studentService_filterData()">
+
+                </select>
+            </div>
+            <div class="col-md-6">
+                <select class="form-control" id="type-list" name="courseList[]" multiple="multiple"
+                    onchange="studentService_filterData()">
+
+                </select>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <button type="button" class="btn btn-link" onclick="studentService_goInsertPage()">Thêm mới</button>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <div class="table-responsive" style="overflow-x: scroll;">
+                            <table class="table table-bordered" id="dataTables-example">
+                                <thead>
+                                    <tr>
+                                        <th rowspan="2" scope="col">#</th>
+                                        <th rowspan="2" scope="col">MSSV</th>
+                                        <th rowspan="2" scope="col">Họ Tên</th>
+                                        <th rowspan="2" scope="col">Loại</th>
+                                        <th colspan="3" style="text-align: center;">Dịch vụ sinh viên</th>
+                                        <th colspan="3" style="text-align: center;">Tài vụ</th>
+                                        <th colspan="3" style="text-align: center;">Đào tạo</th>
+                                        <th rowspan="2" scope="col">Trạng thái</th>
+                                        <th rowspan="2" scope="col" class="action">Thao tác</th>
+                                    </tr>
+                                    <tr>
+                                        <th scope="col">Trạng thái</th>
+                                        <th scope="col">Ngày cập nhật</th>
+                                        <th scope="col">Người cập nhật</th>
+                                        <th scope="col">Trạng thái</th>
+                                        <th scope="col">Ngày cập nhật</th>
+                                        <th scope="col">Người cập nhật</th>
+                                        <th scope="col">Trạng thái</th>
+                                        <th scope="col">Ngày cập nhật</th>
+                                        <th scope="col">Người cập nhật</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tbody">
+                                    {{#each papers}}
+                                    <tr id="{{this._id}}">
+                                        <th scope="row">{{index @index}}</th>
+                                        <td>{{renderRejoin this 1}}</td>
+                                        <td>{{renderRejoin this 2}}</td>
+                                        <td>{{renderRejoin this 3}}</td>
+                                        <td>{{renderRejoin this 4}}</td>
+                                        <td>{{renderRejoin this 5}}</td>
+                                        <td>{{renderRejoin this 6}}</td>
+                                        <td>{{renderRejoin this 7}}</td>
+                                        <td>{{renderRejoin this 8}}</td>
+                                        <td>{{renderRejoin this 9}}</td>
+                                        <td>{{renderRejoin this 10}}</td>
+                                        <td>{{renderRejoin this 11}}</td>
+                                        <td>{{renderRejoin this 12}}</td>
+                                        <td>{{renderRejoin this 13}}</td>
+                                        <td class="action">
+                                            <button
+                                                onclick="studentService_initDetailPaper('{{this._id}}')"
+                                                class="btn btn-link">
+                                                <i class="fa fa-edit "></i> Chi tiết
+                                            </button>
+                                            <button data-toggle="modal" data-target="#myModal13"
+                                                onclick="studentService_initChangePaperType('{{this._id}}')"
+                                                class="btn btn-link">
+                                                <i class="fa fa-edit "></i> Cập nhật
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    {{/each}}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="myModal2" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">Thông tin chi tiết</h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-group " style="display: flex; align-items: center; justify-content: center"
+                    id="student-info">
+                    <iframe id="docx-frame"
+                        style="border: none; width: 100%;max-width: 1200px; margin:auto; height: 70vh"
+                        src="/uploads/TVCN.html"></iframe>
+                </div>
+            </div>
+        </div>
+        <div class="form-group modal-footer" id="modal-buttons">
+            <button data-dismiss="modal" type="button" class="btn btn-primary" onclick="reloadFrame()">Đóng</button>
+        </div>
+    </div>
+</div>
+
+<!--  Modals-->
+<div class="modal fade" id="myModal13" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog" id="modal-detail-paper" style="font-family: 'Times New Roman', Times, serif;">
+    </div>
+</div>
+</div>
+
+
+<!-- CONTENT-WRAPPER SECTION END-->
+<section class="footer-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                &copy; 2022 Ít nhưng dài lâu
+            </div>
+        </div>
+    </div>
+</section>
+<script src="/js/rejoin.js"></script>
+<script>
+
+    const _papers = {{{ _papers }}};
+    const _campaigns = {{{ _campaigns }}};
+    const _rejoinPaperTypes = {{{ _rejoinPaperTypes }}};
+
+    let _newStudentStatus = {{{ _newStudentStatus }}};
+    let _semesterProps = {{{ _semesterProps }}};
+    let _newCourses = {{{ _newCourses }}};
+
+    studentService_initCampaigns(_campaigns);
+    studentService_initPaperTypes(_rejoinPaperTypes);
+
+    console.log(_papers, _campaigns, _rejoinPaperTypes);
+
+    const reloadFrame = () => {
+        $('#docx-frame').attr('src', '/uploads/TVCN.html');
+    }
+
+    const studentService_onUpdatePaperStatus = (id, status) => {
+        const paper = _papers.find(p => p._id.toString() == id.toString());
+        if (paper) {
+            if (status.toString() == 'CLOSED') {
+                status = 5;
+            } else if (status.toString() == 'CANCEL') {
+                status = 3;
+            }
+            swal("Xác nhận cập nhật phiếu nhập học?", {
+                buttons: {
+                    cancel: "Hủy",
+                    confirm: 'Xác nhận',
+                },
+            })
+                .then(async (value) => {
+                    if (value) {
+                        const url = `/api/papers/dich-vu-sinh-vien/nhap-hoc-tro-lai/`;
+
+                        const option = {
+                            method: 'put',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ rejoinPaper: paper, status })
+                        }
+                        try {
+                            const result = await fetchAPI(url, option);
+                            if (result.error == false) {
+                                window.location.href = '/dich-vu-sinh-vien/nhap-hoc-tro-lai/'
+                            }
+                            else {
+                                swal("Lỗi", result.message, "error");
+                            }
+                        } catch (e) { swal(`Lỗi: ${e.message} `); }
+                    }
+                })
+        }
+    }
+
+    const studentService_initDetailPaper = (id) => {
+        const paper = _papers.find(p => p._id.toString() == id.toString());
+        let html = ``;
+        if (paper) {
+            $('#modal-detail-paper').css('width', 'auto');
+            if (paper.type == 1) {
+                let { emailSent, studentServiceStatus, studentServiceBy, studentServiceAt, financeStatus, financeBy, financeAt } = paper.nextPartFirst;
+                html += `
+                    <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title" id="myModalLabel">Thông tin chi tiết</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div> 
+                    `
+                html += `<div style="font-size: 20px;text-align: center; font-weight: bold;">${paper.studentCode.toUpperCase()}_HỌC KỲ ${studentService_getSemFromDate()}_PHẢN HỒI TƯ VẤN THÔI HỌC QUAY LẠI</div>`
+                html += `<div style="font-style: italic;">${paper.fullname} thân mến,</div>`
+                html += `
+                    <div style="font-style: italic;">
+                        Như đã trao đổi qua điện thoại, Phòng DVSV gửi Bạn các thông tin và việc cần phải hoàn thành để đủ điều kiện nhập học trở lại.
+                    </div>
+                    <div style="font-style: italic;">Bạn  vui lòng xem thông tin bên dưới nhé.</div>
+                    <div  style="font-style: italic; font-weight: bold;">1. Kế hoạch học tập dự kiến sau khi SV quay lại : </div>
+                    <table style="width: 90%; margin: 0 auto;border-collapse: collapse;">
+                        <thead>
+                            <tr>
+                                <td style="font-style: italic;font-weight: bold;border: 0.5px solid lightgrey; text-align: center;">Ngành học</td>
+                                <td style="font-style: italic;font-weight: bold;border: 0.5px solid lightgrey; text-align: center;">Trạng thái học tập</td>
+                                <td style="font-style: italic;font-weight: bold;border: 0.5px solid lightgrey; text-align: center;width: 12%;">Level Tiếng Anh</td>
+                                <td style="font-style: italic;font-weight: bold;border: 0.5px solid lightgrey; text-align: center;width: 12%;">Môn thi lại</td>
+                                <td style="font-style: italic;font-weight: bold;border: 0.5px solid lightgrey; text-align: center;width: 12%;">Môn học lại</td>
+                                <td style="font-style: italic;font-weight: bold;border: 0.5px solid lightgrey; text-align: center;width: 12%;">Môn miễn giảm</td>
+                                <td style="font-style: italic;font-weight: bold;border: 0.5px solid lightgrey; text-align: center;width: 12%;">Môn bổ sung</td>
+                                <td style="font-style: italic;font-weight: bold;border: 0.5px solid lightgrey; text-align: center;width: 12%;">Ghi chú</td>
+                            </tr>
+                        </thead>
+                        <tbody id="tbody-detail">
+                        <tr>
+            `
+                let englishString = `${paper.nextPartFirst.english.level} - ${formatCurrency(paper.nextPartFirst.english.fee)}`;
+                englishString = englishString.trim().length > 1 ? englishString : '';
+                html += `
+                <td style="padding: 5px;border: 0.5px solid lightgrey;">${paper.course}</td>
+                <td style="padding: 5px;border: 0.5px solid lightgrey;">${paper.nextPartFirst.rejoinStudentStatus}</td>
+                <td style="padding: 5px;border: 0.5px solid lightgrey;">${englishString}</td>
+                <td style="padding: 5px;border: 0.5px solid lightgrey;">
+                    ${paper.nextPartFirst.retestSubjects.map((item, index) => {
+                    return `<p>${item.name}(${item.part}P) - ${formatCurrency(item.fee)}</p>`
+                }).join(' ')}
+                </td>
+                <td style="padding: 5px;border: 0.5px solid lightgrey;">
+                    ${paper.nextPartFirst.retakeSubjects.map((item, index) => {
+                    return `<p>${item.name} - ${formatCurrency(item.fee)}</p>`
+                }).join(' ')}
+                </td>
+                <td style="padding: 5px;border: 0.5px solid lightgrey;">
+                    ${paper.nextPartFirst.finishedSubjects.map((item, index) => {
+                    return `<p>${item.name} - ${formatCurrency(item.fee)}</p>`
+                }).join(' ')}
+                </td>
+                <td style="padding: 5px;border: 0.5px solid lightgrey;">
+                    ${paper.nextPartFirst.newSubjects.map((item, index) => {
+                    return `<p>${item.name} - ${formatCurrency(item.fee)}</p>`
+                }).join(' ')}
+                </td>
+                <td style="padding: 5px;border: 0.5px solid lightgrey;">${paper.nextPartFirst.notes}</td>
+            `
+                html += `</tr>`
+                html += `</tbody></table>`
+                html += `<div style="font-style: italic;font-weight: bold;">2. Số dư kỳ trước: 
+                        <span>${new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(paper.nextPartFirst.remainFee)}</span></div>`
+                html += `<div style="font-style: italic;font-weight: bold;">3. Học phí dự kiến: 
+                        <span>${formatCurrency(Number(paper.nextPartFirst.totalFee) - Number(paper.nextPartFirst.remainFee))}</span> (đã bao gồm phí nhập học trở lại)</div>`
+                html += `<div style="font-style: italic;font-weight: bold; color: red; font-size: 20px;">Phí cần đóng ngay:
+                         <span>${formatCurrency(500000 + (paper.nextPartFirst.rejoinStudentStatus == 1 ? (Number(paper.courseFee) + Number(paper.nextPartFirst.english.fee)) : 0))}</span></div>`
+                html += `<div style="font-style: italic;font-weight: bold;">4. Hạn đóng học phí: <span>${formatDate(paper.nextPartFirst.feeDeadline)}</span></div>`
+                html += paper.nextPartFirst.rejoinStudentStatus == 1 ?
+                    `
+                    <div style="font-style: italic;font-weight: bold;">5. Thông tin đóng tiền:</div>
+                            <div style="font-style: italic;">
+                                - Bước 1: Bạn thanh toán học phí tại cổng thanh toán trực tuyến DNG:
+                                <a style="font-weight: bold; text-decoration: underline;" href="https://dng.fpt.edu.vn/Invoice">Index - FPT DNG</a>
+                            </div>
+                            <div style="font-style: italic;">- Bước 2: Bạn tiến hành đăng ký Học lại hoặc Thi lại tại hệ thống AP, Link hướng dẫn đăng ký:
+                                <a style="font-weight: bold; text-decoration: underline;" href="https://www.youtube.com/watch?v=_130ssE8Zjo"> Hướng dẫn đăng ký Thi lại - Học lại trực tuyến - YouTube. (nếu có)</a>
+                            </div>
+                ` : `
+                    <div style="font-style: italic;font-weight: bold;">5. Thông tin đóng tiền: <span style="font-style: italic;font-weight: 500;">Bạn vui lòng làm theo các bước hướng dẫn sau:</span></div>
+                            <div style="font-style: italic;">
+                                - Bước 1: Bạn thanh toán phí Thôi học quay lại (${formatCurrency(500000)}) tại cổng thanh toán trực tuyến DNG:
+                                <a style="font-weight: bold; text-decoration: underline;" href="https://dng.fpt.edu.vn/Invoice">Index - FPT DNG</a>
+                            </div>
+                            <div style="font-style: italic;">- Bước 2: Bạn vui lòng chờ cán bộ tư vấn phản hồi thông tin active tài khoản mail qua điện thoại.</div>
+                            <div style="font-style: italic;">- Bước 3: Bạn tiến hành đăng ký Học lại hoặc Thi lại tại hệ thống AP, Link hướng dẫn đăng ký:
+                                <a style="font-weight: bold; text-decoration: underline;" href="https://www.youtube.com/watch?v=_130ssE8Zjo"> Hướng dẫn đăng ký Thi lại - Học lại trực tuyến - YouTube.</a>
+                            </div>
+                            
+                    `
+                html += `
+                <div style="font-style: italic;">Nếu Bạn cần hỗ trợ, Bạn có thể liên hệ lại với phòng Dịch Vụ Sinh Viên thông qua:</div>
+                            <div style="font-style: italic;font-weight: bold;">- Email: <span>dvsvpoly.hcm@poly.edu.vn</span></div>
+                            <div style="font-style: italic;font-weight: bold;">- Link google meet (trong giờ hành chính): 
+                                <a href="https://meet.google.com/zvw-gfoo-yvn">Meet - zvw-gfoo-yvn (google.com)</a>
+                            </div>
+                            <div style="font-style: italic;font-weight: bold;">- Hotline: 028.7308.8800</div>
+                            <div style="font-style: italic;">Bạn hãy luôn chú ý điện thoại để có thể nhận liên hệ của trường khi cần nhé!!!</div>
+                            <div style="font-style: italic;">Mong sớm được tiếp tục đồng hành cùng bạn tại trường!</div>
+                        </div>
+                    </div>
+                </div>
+            `
+                if (financeStatus == 2) {
+                    if (emailSent) {
+                        html += `
+                            <div class="form-group modal-footer">
+                            <button data-dismiss="modal" type="button" class="btn btn-primary">Đóng cửa sổ</button>
+                            </div>
+                        `
+                    } else {
+                        html += `
+                        <div class="form-group modal-footer">
+                        <button type="button" class="btn btn-primary" id="buttonAccept" onclick="studentService_onSendEmail('${paper._id}')"
+                            data-dismiss="modal">Gửi email</button>
+                        <button data-dismiss="modal" type="button" class="btn btn-primary">Đóng cửa sổ</button>
+                        </div>
+                    `
+                    }
+                } else if (financeStatus == 6) {
+                    if (studentServiceStatus == 4) {
+                        html += `
+                            <div class="form-group modal-footer">
+                                <button type="button" class="btn btn-primary" id="buttonAccept" onclick="studentService_onUpdatePaperStatus('${paper._id}', 'CLOSED')"
+                                data-dismiss="modal">Đóng đơn</button>
+                            <button type="button" class="btn btn-primary" id="buttonAccept" onclick="studentService_onUpdatePaperStatus('${paper._id}', 'CANCEL')"
+                                data-dismiss="modal">Hủy đơn</button>
+                            <button data-dismiss="modal" type="button" class="btn btn-primary">Đóng cửa sổ</button>
+                            </div>
+                            `
+                    } else if (studentServiceStatus == 3 || studentServiceStatus == 5) {
+                        html += `
+                        <div class="form-group modal-footer">
+                         <button data-dismiss="modal" type="button" class="btn btn-primary">Đóng cửa sổ</button>
+                        </div>
+                    `
+                    }
+                } else {
+                    html += `
+                    <div class="form-group modal-footer">
+                        <button data-dismiss="modal" type="button" class="btn btn-primary">Đóng cửa sổ</button>
+                    </div>`
+                }
+
+                $('#myModal13').modal('show');
+                $('#myModal2').modal('hide');
+            }
+            else if (paper.type == 2) {
+                let { createdAt, fullname, course, studentCode, dropoutAtSemester, campaign, nextPartSecond } = paper;
+                let { studyPlanning: sp, newCoursePlanning, totalFee, newAtSemester, newStudentStatus, startAtSemester,
+                    studentServiceStatus, financeStatus, educationStatus, emailSent, remainFee } = nextPartSecond;
+                let educationNotes = `${_newStudentStatus.find(i => i.VALUE.toString() == newStudentStatus.toString())?.NAME || ''} Kỳ ${newAtSemester} ngành ${_newCourses.find(i => i.value.toString() == newCoursePlanning.toString())?.displayName || ''} tại ${startAtSemester}.`;
+                let rows = [];
+                sp.sort((a, b) => a.semester.localeCompare(b.semester));
+                for (let i = 0; i < sp.length; i++) {
+                    const sem = sp[i];
+                    let html = '', text = '', semesterFee = 0, row = {};
+                    let index = _semesterProps.sems.findIndex(x => x.value == sem.semester);
+                    if (index != -1) {
+                        semesterFee = Number(_newCourses.find(i => i.value.toString() == newCoursePlanning.toString())?.fee || 0);
+                        text = ` Học kỳ ${index + 1}`;
+                        if (sem.english.level && sem.english.fee && sem.english.status) {
+                            semesterFee += Number(sem.english.fee);
+                        }
+                        let retestSubjects = '', retakeSubjects = '', newSubjects = '', finishedSubjects = '';
+                        if (sem.retestSubjects.length > 0) {
+                            retestSubjects = sem.retestSubjects.map(x => `${x.name}(${x.parts}P)`).join(', ');
+                            retestSubjects += '\n';
+                        }
+                        if (sem.retakeSubjects.length > 0) {
+                            retakeSubjects = sem.retakeSubjects.map(x => `${x.name}`).join(', ');
+                            retakeSubjects += '\n';
+                        }
+                        if (sem.newSubjects.length > 0) {
+                            text += '. Môn bổ sung: ';
+                            semesterFee += Number(sem.newSubjects.reduce((a, b) => a + Number(b.fee), 0));
+                            text += sem.newSubjects.map(x => `${x.name}`).join(', ');
+                            newSubjects = sem.newSubjects.map(x => `${x.name}: ${new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(x.fee)}`).join('\n');
+                        }
+                        if (sem.finishedSubjects.length > 0) {
+                            text += '. Môn miễn giảm: ';
+                            semesterFee -= Number(sem.finishedSubjects.reduce((a, b) => a + Number(b.fee), 0));
+                            text += sem.finishedSubjects.map(x => `${x.name}`).join(', ');
+                            finishedSubjects = sem.finishedSubjects.map(x => `${x.name}: ${new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(x.fee)}`).join('\n');
+                        }
+                        row = {
+                            index: index,
+                            semester: sem.semester,
+                            english: (sem.english.level && sem.english.fee && sem.english.status) ? `Dự thu ${sem.english.status}\n${sem.english.level}: ${new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(sem.english.fee)}` : '',
+                            retestSubjects: retestSubjects,
+                            retakeSubjects: retakeSubjects,
+                            newSubjects: newSubjects,
+                            finishedSubjects: finishedSubjects,
+                            semesterFee: new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(semesterFee),
+                        }
+                        rows.push(row);
+                        if (sem.english.level && sem.english.fee && sem.english.status) {
+                            text += `. Dự thu ${sem.english.status} Tiếng Anh - ${sem.english.level}`
+                        }
+                        text += '.';
+                        educationNotes += text;
+                    }
+                }
+                educationNotes += ' Sinh viên tự đăng ký học lại hoặc thi lại trên AP.';
+
+
+                let docx = $("#docx-frame").contents().find("body").html();
+
+                docxData = {
+                    request_at: formatDate(createdAt),
+                    fullname: fullname,
+                    current_course: course,
+                    current_semester: dropoutAtSemester,
+                    student_code: studentCode,
+                    requested_course: newCoursePlanning,
+                    requested_semester: '',
+                    requested_reason: '',
+                    request_accepted_reason: '',
+                    new_course_semester: newStudentStatus + ' ' + newAtSemester,
+                    current_major: '',
+                    tuition: new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(totalFee),
+                    tuition_deadline: formatDate(campaign.time),
+                    education_notes: educationNotes,
+                    detail_instruction: '',
+                    start_at_semester: newAtSemester,
+                    paper_title: 'PHIẾU TƯ VẤN HỌC TẬP VÀ TÀI CHÍNH',
+                    paper_sub_title: '(cho sinh viên nhập học lại từ đầu)'
+                }
+
+                for (var i = 0; i < 7; i++) {
+                    let found = rows?.find(x => x.index == i);
+                    if (!found) {
+                        docxData[`sem_${i}`] = `Kỳ ${i + 1}`;
+                        docxData[`tbl_english_${i}`] = "   ";
+                        docxData[`tbl_finished_subjects_${i}`] = "   ";
+                        docxData[`tbl_new_subjects_${i}`] = "   ";
+                        docxData[`tbl_retake_subjects_${i}`] = "   ";
+                        docxData[`tbl_fee_${i}`] = "   ";
+                    } else {
+                        docxData[`sem_${i}`] = found.semester || `Kỳ ${i + 1}`;
+                        docxData[`tbl_english_${i}`] = found.english || "   ";
+                        docxData[`tbl_finished_subjects_${i}`] = found.finishedSubjects || "   ";
+                        docxData[`tbl_new_subjects_${i}`] = found.newSubjects || "   ";
+                        docxData[`tbl_retake_subjects_${i}`] = found.retakeSubjects + ' ' + found.retestSubjects || "   ";
+                        docxData[`tbl_fee_${i}`] = found.semesterFee || "   ";
+                    }
+                }
+
+                Object.keys(docxData).forEach(key => {
+                    docx = docx.replace(`{${key}}`, docxData[key]);
+                });
+
+                let buttons = '<button data-dismiss="modal" type="button" class="btn btn-primary" onclick="reloadFrame()">Đóng</button>';
+                buttons += '<button type="button" data-dismiss="modal" class="btn btn-primary" onclick="handleDownload()">Tải xuống</button>';
+                if (!emailSent && educationStatus == 3 && financeStatus == 2) {
+                    buttons += `<button type="button" class="btn btn-primary" onclick="studentService_onSendEmail('${paper._id}')">Gửi email</button>`;
+                }
+                $('#modal-buttons').html(buttons);
+
+                $("#docx-frame").contents().find("body").html(docx);
+                $('#myModal2').modal('show');
+                $('#myModal13').modal('hide');
+            }
+            else if (paper.type == 3) {
+                let { emailSent, studentServiceStatus, studentServiceBy, studentServiceAt, financeStatus, financeBy, financeAt } = paper.nextPartThird;
+
+                html += `
+                    <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title" id="myModalLabel">Thông tin chi tiết</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div> 
+                    `
+                html += `<div style="font-size: 20px;text-align: center; font-weight: bold;">${paper.studentCode.toUpperCase()}_HỌC KỲ ${studentService_getSemFromDate()}_PHẢN HỒI TƯ VẤN THÔI HỌC QUAY LẠI</div>`
+                html += `<div style="font-style: italic;">${paper.fullname} thân mến,</div>`
+                html += `
+                    <div style="font-style: italic;">
+                        Như đã trao đổi qua điện thoại, Phòng DVSV gửi Bạn các thông tin và việc cần phải hoàn thành để đủ điều kiện nhập học trở lại và chuyển ngành như sau:
+                    </div>
+                     <div style="font-style: italic;">1. Hạn đóng học phí: <span style="background-color: yellow;">${formatDate(paper.nextPartThird.feeDeadline)}</span>
+                            </div>
+                            <div style="font-style: italic;">2. Hình thức đóng học phí: 
+                                <a style="font-weight: 500; text-decoration: underline;" href="https://dng.fpt.edu.vn/Invoice">https://dng.fpt.edu.vn/Invoice</a>
+                            </div>
+                            <div style="font-style: italic;">Ngoài ra Bạn cần nộp thêm 1 bộ hồ sơ mới trước ngày: <span style="background-color: yellow;">${formatDate(paper.nextPartThird.feeDeadline)}</span> bao gồm:</div>
+                            <div style="font-style: italic; padding-left: 12px;">1. Phiếu đăng ký học theo mẫu nhà trường (có xác nhận của địa phương, đóng mộc giáp lai lên ảnh 3x4): Tải phiếu 
+                                <a style="font-weight: 500; text-decoration: underline;" href="https://docs.google.com/document/d/1AIQ-678RfLHhZWKi9qVsZhtLN0kMXSj-/edit">TẠI ĐÂY</a>
+                                .</div>
+                            <div style="font-style: italic; padding-left: 12px;">2. Bằng tốt nghiệp THPT photo công chứng.</div>
+                            <div style="font-style: italic; padding-left: 12px;">3. Chứng minh nhân dân photo công chứng.</div>
+                            <div style="font-style: italic;">Hồ sơ gửi chuyển phát nhanh đến địa chỉ: Phòng Dịch vụ sinh viên, 778/1B Nguyễn Kiệm, Phường 4, Phú Nhuận, Hồ Chí Minh. Hoặc nộp trực tiếp tại cơ sở học gần nhất.</div>
+                            <div style="font-style: italic;">Bạn hãy luôn chú ý điện thoại để có thể nhận liên hệ của trường khi cần nhé!!!</div>
+                            <div style="font-style: italic;">Mong sớm được tiếp tục đồng hành cùng bạn tại trường!</div>
+                        </div>
+                    </div>
+                </div>
+                `
+                if (emailSent) {
+                    html += `
+                        <div class="form-group modal-footer">
+                         <button data-dismiss="modal" type="button" class="btn btn-primary">Đóng cửa sổ</button>
+                        </div>
+                    `
+                } else {
+                    html += `
+                        <div class="form-group modal-footer">
+                        <button type="button" class="btn btn-primary" id="buttonAccept" onclick="studentService_onSendEmail('${paper._id}')"
+                            data-dismiss="modal">Gửi email</button>
+                         <button data-dismiss="modal" type="button" class="btn btn-primary">Đóng cửa sổ</button> 
+                        </div>
+                    `
+                }
+                $('#myModal13').modal('show');
+                $('#myModal2').modal('hide');
+            }
+        }
+        $("#modal-detail-paper").html(html);
+    }
+
+    const studentService_onSendEmail = async (id) => {
+        const paper = _papers.find(p => p._id.toString() == id.toString());
+        let html = '', title = '';
+        if (paper) {
+            if (paper.type == 1) {
+                let { emailSent, studentServiceStatus, studentServiceBy, studentServiceAt, financeStatus, financeBy, financeAt } = paper.nextPartFirst;
+                title = `${paper.studentCode.toUpperCase()}_HỌC KỲ ${studentService_getSemFromDate()}_PHẢN HỒI TƯ VẤN THÔI HỌC QUAY LẠI`;
+                html += ` <div>  `
+                html += `<div style="font-size: 20px;text-align: center; font-weight: bold;">${paper.studentCode.toUpperCase()}_HỌC KỲ ${studentService_getSemFromDate()}_PHẢN HỒI TƯ VẤN THÔI HỌC QUAY LẠI</div>`
+                html += `<div style="font-style: italic;">${paper.fullname} thân mến,</div>`
+                html += `
+                    <div style="font-style: italic;">
+                        Như đã trao đổi qua điện thoại, Phòng DVSV gửi Bạn các thông tin và việc cần phải hoàn thành để đủ điều kiện nhập học trở lại.
+                    </div>
+                    <div style="font-style: italic;">Bạn  vui lòng xem thông tin bên dưới nhé.</div>
+                    <div  style="font-style: italic; font-weight: bold;">1. Kế hoạch học tập dự kiến sau khi SV quay lại : </div>
+                    <table style="width: 90%; margin: 0 auto; border-collapse: collapse;">
+                        <thead>
+                            <tr>
+                                <td style="font-style: italic;font-weight: bold;border: 0.5px solid lightgrey; text-align: center;">Ngành học</td>
+                                <td style="font-style: italic;font-weight: bold;border: 0.5px solid lightgrey; text-align: center;">Trạng thái học tập</td>
+                                <td style="font-style: italic;font-weight: bold;border: 0.5px solid lightgrey; text-align: center;width: 12%;">Level Tiếng Anh</td>
+                                <td style="font-style: italic;font-weight: bold;border: 0.5px solid lightgrey; text-align: center;width: 12%;">Môn thi lại</td>
+                                <td style="font-style: italic;font-weight: bold;border: 0.5px solid lightgrey; text-align: center;width: 12%;">Môn học lại</td>
+                                <td style="font-style: italic;font-weight: bold;border: 0.5px solid lightgrey; text-align: center;width: 12%;">Môn miễn giảm</td>
+                                <td style="font-style: italic;font-weight: bold;border: 0.5px solid lightgrey; text-align: center;width: 12%;">Môn bổ sung</td>
+                                <td style="font-style: italic;font-weight: bold;border: 0.5px solid lightgrey; text-align: center;width: 12%;">Ghi chú</td>
+                            </tr>
+                        </thead>
+                        <tbody id="tbody-detail">
+                        <tr>
+            `
+                let englishString = `${paper.nextPartFirst.english.level} - ${formatCurrency(paper.nextPartFirst.english.fee)}`;
+                englishString = englishString.trim().length > 0 ? englishString : '';
+                html += `
+                <td style="padding: 5px;border: 0.5px solid lightgrey;">${paper.course}</td>
+                <td style="padding: 5px;border: 0.5px solid lightgrey;">${paper.nextPartFirst.rejoinStudentStatus}</td>
+                <td style="padding: 5px;border: 0.5px solid lightgrey;">${englishString}</td>
+                <td style="padding: 5px;border: 0.5px solid lightgrey;">
+                    ${paper.nextPartFirst.retestSubjects.map((item, index) => {
+                    return `<p>${item.name}(${item.part}P) - ${formatCurrency(item.fee)}</p>`
+                }).join(' ')}
+                </td>
+                <td style="padding: 5px;border: 0.5px solid lightgrey;">
+                    ${paper.nextPartFirst.retakeSubjects.map((item, index) => {
+                    return `<p>${item.name} - ${formatCurrency(item.fee)}</p>`
+                }).join(' ')}
+                </td>
+                <td style="padding: 5px;border: 0.5px solid lightgrey;">
+                    ${paper.nextPartFirst.finishedSubjects.map((item, index) => {
+                    return `<p>${item.name} - ${formatCurrency(item.fee)}</p>`
+                }).join(' ')}
+                </td>
+                <td style="padding: 5px;border: 0.5px solid lightgrey;">
+                    ${paper.nextPartFirst.newSubjects.map((item, index) => {
+                    return `<p>${item.name} - ${formatCurrency(item.fee)}</p>`
+                }).join(' ')}
+                </td>
+                <td style="padding: 5px;border: 0.5px solid lightgrey;">${paper.nextPartFirst.notes}</td>
+            `
+                html += `</tr>`
+                html += `</tbody></table>`
+                html += `<div style="font-style: italic;font-weight: bold;">2. Số dư kỳ trước: 
+                        <span>${new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(paper.nextPartFirst.remainFee)}</span></div>`
+                html += `<div style="font-style: italic;font-weight: bold;">3. Học phí dự kiến: 
+                        <span>${formatCurrency(paper.nextPartFirst.totalFee)}</span> (đã bao gồm phí nhập học trở lại)</div>`
+                html += `<div style="font-style: italic;font-weight: bold; color: red; font-size: 15px;">Phí cần đóng ngay:
+                         <span>${formatCurrency(500000 + (paper.nextPartFirst.rejoinStudentStatus == 1 ? (Number(paper.courseFee) + Number(paper.nextPartFirst.english.fee)) : 0))}</span></div>`
+                html += `<div style="font-style: italic;font-weight: bold;">4. Hạn đóng học phí: <span>${formatDate(paper.nextPartFirst.feeDeadline)}</span></div>`
+                html += paper.nextPartFirst.rejoinStudentStatus == 1 ?
+                    `
+                    <div style="font-style: italic;font-weight: bold;">5. Thông tin đóng tiền:</div>
+                            <div style="font-style: italic;">
+                                - Bước 1: Bạn thanh toán học phí tại cổng thanh toán trực tuyến DNG:
+                                <a style="font-weight: bold; text-decoration: underline;" href="https://dng.fpt.edu.vn/Invoice">Index - FPT DNG</a>
+                            </div>
+                            <div style="font-style: italic;">- Bước 2: Bạn tiến hành đăng ký Học lại hoặc Thi lại tại hệ thống AP, Link hướng dẫn đăng ký:
+                                <a style="font-weight: bold; text-decoration: underline;" href="https://www.youtube.com/watch?v=_130ssE8Zjo"> Hướng dẫn đăng ký Thi lại - Học lại trực tuyến - YouTube. (nếu có)</a>
+                            </div>
+                ` : `
+                    <div style="font-style: italic;font-weight: bold;">5. Thông tin đóng tiền: <span style="font-style: italic;font-weight: 500;">Bạn vui lòng làm theo các bước hướng dẫn sau:</span></div>
+                            <div style="font-style: italic;">
+                                - Bước 1: Bạn thanh toán phí Thôi học quay lại (${formatCurrency(500000)}) tại cổng thanh toán trực tuyến DNG:
+                                <a style="font-weight: bold; text-decoration: underline;" href="https://dng.fpt.edu.vn/Invoice">Index - FPT DNG</a>
+                            </div>
+                            <div style="font-style: italic;">- Bước 2: Bạn vui lòng chờ cán bộ tư vấn phản hồi thông tin active tài khoản mail qua điện thoại.</div>
+                            <div style="font-style: italic;">- Bước 3: Bạn tiến hành đăng ký Học lại hoặc Thi lại tại hệ thống AP, Link hướng dẫn đăng ký:
+                                <a style="font-weight: bold; text-decoration: underline;" href="https://www.youtube.com/watch?v=_130ssE8Zjo"> Hướng dẫn đăng ký Thi lại - Học lại trực tuyến - YouTube.</a>
+                            </div>
+                            
+                    `
+                html += `
+                <div style="font-style: italic;">Nếu Bạn cần hỗ trợ, Bạn có thể liên hệ lại với phòng Dịch Vụ Sinh Viên thông qua:</div>
+                            <div style="font-style: italic;font-weight: bold;">- Email: <span>dvsvpoly.hcm@poly.edu.vn</span></div>
+                            <div style="font-style: italic;font-weight: bold;">- Link google meet (trong giờ hành chính): 
+                                <a href="https://meet.google.com/zvw-gfoo-yvn">Meet - zvw-gfoo-yvn (google.com)</a>
+                            </div>
+                            <div style="font-style: italic;font-weight: bold;">- Hotline: 028.7308.8800</div>
+                            <div style="font-style: italic;">Bạn hãy luôn chú ý điện thoại để có thể nhận liên hệ của trường khi cần nhé!!!</div>
+                            <div style="font-style: italic;">Mong sớm được tiếp tục đồng hành cùng bạn tại trường!</div>
+                        </div>
+                    </div>
+                </div>
+            `
+            } else if (paper.type == 2) {
+                title = `${paper.studentCode.toUpperCase()}_HỌC KỲ ${studentService_getSemFromDate()}_NHẬP HỌC TỪ ĐẦU_PHẢN HỒI TƯ VẤN NHẬP  HỌC TRỞ LẠI`;
+                html += `<div style="font-size: 20px;text-align: center; font-weight: bold;">${title}</div>`
+                html += `<div style="font-style: italic;">${paper.fullname} thân mến,</div>`
+                html += `
+                    <div style="font-style: italic;">
+                        Phòng DVSV gửi Bạn thông tin về việc cần phải hoàn thành để đủ điều kiện chuyển ngành. Bạn vui lòng xem thông tin chi tiết về tư vấn môn học và học phí ở File đính kèm.
+                    </div>
+                    <div style="font-style: italic;">1. Hạn đóng học phí: <span style="background-color: yellow;">${formatDate(paper.nextPartSecond.feeDeadline)}</span></div>
+                    <div style="font-style: italic;">2. Hình thức đóng học phí: 
+                                <a style="font-weight: 500; text-decoration: underline;" href="https://dng.fpt.edu.vn/Invoice">https://dng.fpt.edu.vn/Invoice</a>
+                    </div>
+                    <div style="font-style: italic;">Ngoài ra Bạn cần nộp thêm 1 bộ hồ sơ mới trước ngày: <span style="background-color: yellow;">${formatDate(paper.nextPartSecond.feeDeadline)}</span> bao gồm:</div>
+                    <div style="font-style: italic; padding-left: 12px;">1. Phiếu đăng ký học theo mẫu nhà trường (có xác nhận của địa phương, đóng mộc giáp lai lên ảnh 3x4): Tải phiếu 
+                                <a style="font-weight: 500; text-decoration: underline;" href="https://docs.google.com/document/d/1AIQ-678RfLHhZWKi9qVsZhtLN0kMXSj-/edit">TẠI ĐÂY</a>
+                                .</div>
+                            <div style="font-style: italic; padding-left: 12px;">2. Bằng tốt nghiệp THPT photo công chứng.</div>
+                            <div style="font-style: italic; padding-left: 12px;">3. Chứng minh nhân dân photo công chứng.</div>
+                            <div style="font-style: italic;">Hồ sơ gửi chuyển phát nhanh đến địa chỉ: Phòng Dịch vụ sinh viên, 778/1B Nguyễn Kiệm, Phường 4, Phú Nhuận, Hồ Chí Minh. Hoặc nộp trực tiếp tại cơ sở học gần nhất.</div>
+                            <div style="font-style: italic;">Bạn hãy luôn chú ý điện thoại để có thể nhận liên hệ của trường khi cần nhé!!!</div>
+                            <div style="font-style: italic;">Mong sớm được tiếp tục đồng hành cùng bạn tại trường!</div>
+                            </div>
+                        </div>
+                    </div>
+                    `
+
+            } else if (paper.type == 3) {
+                title = `${paper.studentCode.toUpperCase()}_HỌC KỲ ${studentService_getSemFromDate()}_PHẢN HỒI TƯ VẤN THÔI HỌC QUAY LẠI`;
+                html += `<div style="font-size: 20px;text-align: center; font-weight: bold;">${paper.studentCode.toUpperCase()}_HỌC KỲ ${studentService_getSemFromDate()}_PHẢN HỒI TƯ VẤN THÔI HỌC QUAY LẠI</div>`
+                html += `<div style="font-style: italic;">${paper.fullname} thân mến,</div>`
+                html += `
+                    <div style="font-style: italic;">
+                        Như đã trao đổi qua điện thoại, Phòng DVSV gửi Bạn các thông tin và việc cần phải hoàn thành để đủ điều kiện nhập học trở lại và chuyển ngành như sau:
+                    </div>
+                     <div style="font-style: italic;">1. Hạn đóng học phí: <span style="background-color: yellow;">${formatDate(paper.nextPartThird.feeDeadline)}</span>
+                            </div>
+                            <div style="font-style: italic;">2. Hình thức đóng học phí: 
+                                <a style="font-weight: 500; text-decoration: underline;" href="https://dng.fpt.edu.vn/Invoice">https://dng.fpt.edu.vn/Invoice</a>
+                            </div>
+                            <div style="font-style: italic;">Ngoài ra Bạn cần nộp thêm 1 bộ hồ sơ mới trước ngày: <span style="background-color: yellow;">${formatDate(paper.nextPartThird.feeDeadline)}</span> bao gồm:</div>
+                            <div style="font-style: italic; padding-left: 12px;">1. Phiếu đăng ký học theo mẫu nhà trường (có xác nhận của địa phương, đóng mộc giáp lai lên ảnh 3x4): Tải phiếu 
+                                <a style="font-weight: 500; text-decoration: underline;" href="https://docs.google.com/document/d/1AIQ-678RfLHhZWKi9qVsZhtLN0kMXSj-/edit">TẠI ĐÂY</a>
+                                .</div>
+                            <div style="font-style: italic; padding-left: 12px;">2. Bằng tốt nghiệp THPT photo công chứng.</div>
+                            <div style="font-style: italic; padding-left: 12px;">3. Chứng minh nhân dân photo công chứng.</div>
+                            <div style="font-style: italic;">Hồ sơ gửi chuyển phát nhanh đến địa chỉ: Phòng Dịch vụ sinh viên, 778/1B Nguyễn Kiệm, Phường 4, Phú Nhuận, Hồ Chí Minh. Hoặc nộp trực tiếp tại cơ sở học gần nhất.</div>
+                            <div style="font-style: italic;">Bạn hãy luôn chú ý điện thoại để có thể nhận liên hệ của trường khi cần nhé!!!</div>
+                            <div style="font-style: italic;">Mong sớm được tiếp tục đồng hành cùng bạn tại trường!</div>
+                        </div>
+                    </div>
+                </div>
+                `
+            }
+        }
+
+
+
+        console.log(rejoinPaper);
+        if (paper.type == 1 || paper.type == 3) {
+            swal("Xác nhận gửi email?", {
+                buttons: {
+                    cancel: "Hủy",
+                    confirm: 'Xác nhận',
+                },
+            })
+                .then(async (value) => {
+                    if (value) {
+                        const url = `/api/papers/dich-vu-sinh-vien/gui-email-nhap-hoc-tro-lai`;
+
+                        const option = {
+                            method: 'post',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ content: html, title, id })
+                        }
+                        try {
+                            const result = await fetchAPI(url, option);
+                            if (result.error == false) {
+                                window.location.href = '/dich-vu-sinh-vien/nhap-hoc-tro-lai/'
+                            }
+                            else {
+                                swal("Lỗi", result.message, "error");
+                            }
+                        } catch (e) { swal(`Lỗi: ${e.message} `); }
+                    }
+                })
+        } else if (paper.type == 2) {
+            swal("Xác nhận gửi email?", {
+                buttons: {
+                    cancel: "Hủy",
+                    confirm: 'Xác nhận',
+                },
+            })
+                .then(async (value) => {
+                    if (value) {
+                        const url = `/api/papers/dich-vu-sinh-vien/gui-email-nhap-hoc-tro-lai`;
+
+                        const blobToDataURL = (blob, callback) => {
+                            var a = new FileReader();
+                            a.onload = function (e) { callback(e.target.result); }
+                            a.readAsDataURL(blob);
+                        }
+
+                        handleLoadDocx(out => {
+                            blobToDataURL(out, async file => {
+                                const option = {
+                                    method: 'post',
+                                    headers: { 'Content-Type': 'application/json' },
+                                    body: JSON.stringify({ content: html, title, id, file: file })
+                                }
+
+                                try {
+                                    let result = await fetchAPI(url, option);
+                                    if (result.error == false) {
+                                        swal(`Thông báo`, `Gửi mail thành công`, `success`);
+                                        window.location.reload();
+                                    } else {
+                                        swal(`Lỗi: ${result.message}`)
+                                    }
+
+                                } catch (e) { swal(`Lỗi: ${e.message}`) }
+                            })
+                        });
+                    }
+                })
+        }
+
+    }
+
+    const studentService_initChangePaperType = (id) => {
+        const paper = _papers.find(p => p._id.toString() == id.toString());
+        let html = ``;
+        if (paper) {
+            $('#modal-detail-paper').css('width', '600px');
+            html += `
+                    <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title" id="myModalLabel">Chọn loại nhập học trở lại</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div> 
+                    `
+            let options = '';
+            for (let i = 0; i < _rejoinPaperTypes.length; i++) {
+                const rejoinPaperType = _rejoinPaperTypes[i];
+                options += rejoinPaperType.value == paper.type ?
+                    `<option selected value="${rejoinPaperType.value}">${rejoinPaperType.name}</option>` :
+                    `<option value="${rejoinPaperType.value}">${rejoinPaperType.name}</option>`;
+            }
+            html += `
+                   <div class="form-group ">
+                        <label class="control-label">Loại</label>
+                        <select class="form-control" id="rejoinPaperType" name="rejoinPaperType">
+                        ${options}</select>
+                    </div>
+                `
+            html += `
+                        </div>
+                        </div>
+                            <div class="form-group modal-footer">
+                            <button data-dismiss="modal" type="button" class="btn btn-link">Đóng cửa sổ</button>
+                            <button data-dismiss="modal" type="button" class="btn btn-primary"
+                                onclick="studentService_onGoToUpdatePage('${paper._id}');"
+                                >Lưu & Chỉnh sửa thông tin</button>
+                            </div>
+                        `
+        }
+        $("#modal-detail-paper").html(html);
+    }
+
+    const studentService_onGoToUpdatePage = (id) => {
+        const rejoinPaperType = $('#rejoinPaperType').val();
+        window.location.href = `/dich-vu-sinh-vien/nhap-hoc-tro-lai/cap-nhat?id=${id}&t=${rejoinPaperType}`;
+    }
+
+
+    const loadFile = (url, callback) => {
+        PizZipUtils.getBinaryContent(url, callback);
+    }
+
+    const handleLoadDocx = async (callback) => {
+        loadFile("/uploads/NhapHocTuDau.docx",
+            async function (error, content) {
+                if (error) {
+                    throw error;
+                }
+                var zip = new PizZip(content);
+                var doc = new window.docxtemplater(zip, {
+                    paragraphLoop: true,
+                    linebreaks: true,
+                });
+
+                // Render the document (Replace {first_name} by John, {last_name} by Doe,    )
+                doc.render(docxData);
+
+                var out = doc.getZip().generate({
+                    type: "blob",
+                    mimeType:
+                        "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+                    // compression: DEFLATE adds a compression step.
+                    // For a 50MB output document, expect 500ms additional CPU time
+                    compression: "DEFLATE",
+                });
+
+                return callback(out);
+            }
+        );
+    }
+
+    const handleDownload = async () => {
+        handleLoadDocx(out => {
+            saveAs(out, `${docxData.student_code}.docx`);
+            reloadFrame();
+        })
+    }
+
+
+
+
+</script>

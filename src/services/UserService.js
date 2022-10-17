@@ -31,6 +31,7 @@ class UserService extends Service {
                         code: row.CODE,
                         email: row.EMAIL + '@fpt.edu.vn',
                         role: config.USER_ROLE.STUDENT,
+                        current_semester: row.CURRENT_SEMESTER,
                         available: false,
                     }
                     try{

@@ -3,12 +3,16 @@ const autoBind = require('auto-bind');
 const config = require('../../config/config').getConfig();
 const resourses = require('../../config/resourses').getResources();
 const { ChangeCoursePaperService } = require('../services/ChangeCoursePaperService');
+const { CampaignService } = require('../services/CampaignService');
 const { ChangeCoursePaper } = require('../models/ChangeCoursePaper');
+const { Campaign } = require('../models/Campaign');
 const Mailer = require('../services/Mailer');
 const changeCoursePaperService = new ChangeCoursePaperService(new ChangeCoursePaper().getInstance());
+const campaignService = new CampaignService(new Campaign().getInstance());
 const { User } = require('../models/User');
 const { UserService } = require('../services/UserService');
 const userService = new UserService(new User().getInstance());
+
 
 
 class IndexController {
@@ -52,32 +56,85 @@ class IndexController {
 
     async getChangeCoursePaperForEducation(req, res, next) {
         try {
-            const response = await changeCoursePaperService.getAll({ limit: 1000 });
+            let { campaign, course } = req.query;
+            const response = await changeCoursePaperService.getAll({ limit: 1000, campaign: campaign, course: course });
+            let campaigns = await campaignService.getAll({ limit: 100000, department: 1 });
+            campaigns = campaigns.data;
+            campaigns = campaigns.map(c => {
+                c = {
+                    _id: c._id,
+                    name: c.name,
+                    time: c.time,
+                    isSelected: false
+                }
+                if (campaign && campaign == c._id) {
+                    c.isSelected = true;
+                }
+                return c;
+            });
+
             let coursePapers = response.data;
+            let { semesterProps, englishProps, courses } = resourses;
+
+            course = Array.isArray(course) ? course : course ? [course] : [];
+            courses = courses.map(c => {
+                c = {
+                    name: c.name,
+                    isSelected: false
+                }
+                if (course && course.length > 0 && course.some(i => i.toString() == c.name.toString())) {
+                    c.isSelected = true;
+                }
+                return c;
+            });
+
             res.render('bdt/list', {
                 currentYear: new Date().getFullYear(),
                 coursePapers: coursePapers,
+                _campaigns: JSON.stringify(campaigns),
+                _campaignTypes: JSON.stringify(config.CAMPAIGN_TYPES),
                 _coursePapers: JSON.stringify(coursePapers),
+                _semesterProps: JSON.stringify(semesterProps),
+                _englishProps: JSON.stringify(englishProps),
+                _courses: JSON.stringify(courses),
             });
 
         } catch (e) {
+            console.log(e)
             next(e);
         }
     }
 
     async sendTuitionMail(req, res, next) {
         try {
-            const { email, name, tuition_deadline } = req.body;
+            const { email, name, tuition_deadline, file, idPaper, idVersion, code, newComerStudent } = req.body;
+            const { _id } = req.user;
+            const semester = this.getSemFromDate();
+            let { semesterProps, englishProps } = resourses;
+            // let path = await changeCoursePaperService.generateDocPDF(idPaper, semesterProps, englishProps);
 
-            let mailContent = `
+            let mailContent = newComerStudent ? `
+            <b>Bạn ${name} thân mến</b>,
+            <p>Phòng DVSV gửi Bạn thông tin về việc cần phải hoàn thành để đủ điều kiện chuyển ngành. Bạn vui lòng xem thông tin chi tiết về tư vấn môn học và học phí ở File đính kèm.</p>
+            <p  style="font-weight: bold; color: red;">1. Hạn đóng học phí: ${tuition_deadline}
+            <br/>
+            2. Hình thức đóng phí: <a href="https://dng.fpt.edu.vn/Invoice">https://dng.fpt.edu.vn/Invoice</a></p>
+            <p>Ngoài ra Bạn cần nộp thêm 1 bộ hồ sơ mới trước ngày: <span style="font-weight: bold; color: red;"> ${tuition_deadline}</span> bao gồm:</p>
+            <p>1. Phiếu đăng ký học theo mẫu nhà trường (có xác nhận của địa phương, đóng mộc giáp lai lên ảnh 3x4): Tải phiếu <a href="https://docs.google.com/document/d/1AIQ-678RfLHhZWKi9qVsZhtLN0kMXSj-/edit">TẠI ĐÂY.</a></p>
+            <p>2. Bằng tốt nghiệp THPT photo công chứng.</p>
+            <p>3. Chứng minh nhân dân photo công chứng.</p>
+            <p>Hồ sơ gửi chuyển phát nhanh đến địa chỉ: Phòng Dịch vụ sinh viên, 778/1B Nguyễn Kiệm, Phường 4, Phú Nhuận, Hồ Chí Minh. Hoặc nộp trực tiếp tại cơ sở học gần nhất.</p>
+            <br>
+            <p>Bạn hãy luôn chú ý điện thoại để có thể nhận liên hệ của trường khi cần nhé!!!</p>
+            <p>Mong sớm được tiếp tục đồng hành cùng bạn tại trường!</p>
+            ` : `
             <b>Bạn ${name} thân mến</b>,
             <p>Phòng DVSV gửi Bạn các thông tin và việc cần phải hoàn thành để đủ điều kiện chuyển ngành.
             Bạn vui lòng xem thông tin chi tiết về tư vấn môn học và học phí ở File đính kèm.</p>
-            <br/>
+            <p>Nếu đồng ý với nội dung tư vấn, 
+                <span style="font-weight: bold; color: red;">Hãy phản hồi lại Email này trong vòng 8 giờ với nội dung: “Tôi đồng ý chuyển ngành theo nội dung được tư vấn”.</span></p>
             
-            <p>Nếu đồng ý với nội dung tư vấn, Hãy phản hồi lại Email này trong vòng 8 giờ với nội dung: “Tôi đồng ý chuyển ngành theo nội dung được tư vấn”.</p>
-            <br/>
-            <p>1.        Hạn đóng học phí: ${tuition_deadline}
+            <p  style="font-weight: bold; color: red;">1.        Hạn đóng học phí: ${tuition_deadline}
             <br/>
             2.        Phương thức đóng học phí: chi tiết ở file đính kèm.</p>
             <br/>
@@ -85,13 +142,14 @@ class IndexController {
             Chúc Bạn học tập thật tốt và nhiều sức khỏe.</p>
             `
 
-            let mailer = new Mailer(email, `Thông báo học phí`, mailContent);
-            mailer.send();
+            let title = newComerStudent ? `${code} - ${semester} - NHẬP HỌC LẠI TỪ ĐẦU - PHẢN HỒI NỘI DUNG TƯ VẤN CHUYỂN NGÀNH` : `${code} - ${semester} - PHẢN HỔI TƯ VẤN CHUYỂN NGÀNH`;
 
-            res.send({
-                statusCode: 200,
-                message: 'Gửi email thành công'
-            });
+            let mailer = new Mailer(email, title, mailContent, file, code);
+            await mailer.send();
+
+            let rs = await changeCoursePaperService.updateSendEmail({ idPaper: idPaper, idVersion: idVersion }, _id);
+
+            return await res.status(rs.statusCode).json(rs);
         } catch (e) {
             console.log(e);
             next(e);
@@ -100,12 +158,46 @@ class IndexController {
 
     async getChangeCoursePaperForFinance(req, res, next) {
         try {
-            const { id } = req.query;
-            const response = await changeCoursePaperService.getAll({ limit: 1000 });
+            let { campaign, course } = req.query;
+            const response = await changeCoursePaperService.getAll({ limit: 1000, campaign: campaign, course: course });
+            let campaigns = await campaignService.getAll({ limit: 100000, department: 1});
+            campaigns = campaigns.data;
+            campaigns = campaigns.map(c => {
+                c = {
+                    _id: c._id,
+                    name: c.name,
+                    time: c.time,
+                    isSelected: false
+                }
+                if (campaign && campaign == c._id) {
+                    c.isSelected = true;
+                }
+                return c;
+            });
+
             let coursePapers = response.data;
+            let { semesterProps, englishProps, courses } = resourses;
+
+            course = Array.isArray(course) ? course : course ? [course] : [];
+            courses = courses.map(c => {
+                c = {
+                    name: c.name,
+                    isSelected: false
+                }
+                if (course && course.length > 0 && course.some(i => i.toString() == c.name.toString())) {
+                    c.isSelected = true;
+                }
+                return c;
+            });
+
             res.render('tv/list', {
                 currentYear: new Date().getFullYear(),
                 coursePapers: coursePapers,
+                _coursePapers:  JSON.stringify(coursePapers),
+                _campaigns: JSON.stringify(campaigns),
+                _semesterProps: JSON.stringify(semesterProps),
+                _englishProps: JSON.stringify(englishProps),
+                _courses: JSON.stringify(courses),
             });
 
         } catch (e) {
@@ -149,15 +241,47 @@ class IndexController {
     // ko có là thêm mới
     async getChangeCoursePaperForStudentService(req, res, next) {
         try {
-            const { id } = req.query;
-            const response = await changeCoursePaperService.getAll({ limit: 1000 });
+            let { campaign, course } = req.query;
+            const response = await changeCoursePaperService.getAll({ limit: 1000, campaign: campaign, course: course });
             let coursePapers = response.data;
+            let campaigns = await campaignService.getAll({ limit: 100000, department: 1 });
+            campaigns = campaigns.data;
+            campaigns = campaigns.map(c => {
+                c = {
+                    _id: c._id,
+                    name: c.name,
+                    time: c.time,
+                    isSelected: false
+                }
+                if (campaign && campaign == c._id) {
+                    c.isSelected = true;
+                }
+                return c;
+            });
             //let statusAnalys = await changeCoursePaperService.getStatusAnalys(coursePapers);
+            let { semesterProps, englishProps, courses } = resourses;
+
+            course = Array.isArray(course) ? course : course ? [course] : [];
+            courses = courses.map(c => {
+                c = {
+                    name: c.name,
+                    isSelected: false
+                }
+                if (course && course.length > 0 && course.some(i => i.toString() == c.name.toString())) {
+                    c.isSelected = true;
+                }
+                return c;
+            });
 
             res.render('studentService/list', {
                 currentYear: new Date().getFullYear(),
                 coursePapers: coursePapers,
+                _coursePapers: JSON.stringify(coursePapers),
+                _campaigns: JSON.stringify(campaigns),
                 paperStatus: config.PAPER_STATUS_OPTIONS,
+                _semesterProps: JSON.stringify(semesterProps),
+                _englishProps: JSON.stringify(englishProps),
+                _courses: JSON.stringify(courses),
                 //statusAnalys
             });
 
@@ -190,32 +314,21 @@ class IndexController {
     async getChangeCoursePaperForEducationToFixUpdate(req, res, next) {
         try {
             const { id } = req.params;
+            const { campaign } = req.query;
             const response = await changeCoursePaperService.getOneCoursePaper(id);
-            let coursePapers = response.data;
-            if(coursePapers.finance_status != config.FINANCE_STATUS.REJECTED){
-                return res.redirect('/dao-tao/chuyen-nganh-hoc');
-            }
+            let paper = response.data;
+            let version = paper.versions[0];
 
-            let courses = await this.getSubjects();
-            let allCourses = await this.getAllCourse();
-            courses.sort(function (a, b) {
-                if (a.code > b.code) {
-                    return 1;
-                }
-                if (b.code > a.code) {
-                    return -1;
-                }
-                return 0;
-            });
-
+            let { courses, subjects, semesterProps, englishProps } = resourses;
             res.render('bdt/update', {
                 currentYear: new Date().getFullYear(),
-                coursePapers: coursePapers,
-                _coursePapers: JSON.stringify(coursePapers),
-                courses: courses,
+                paper: paper,
+                version: version,
+                _version: JSON.stringify(version),
                 _courses: JSON.stringify(courses),
-                allCourses: allCourses,
-                _allCourses: JSON.stringify(allCourses),
+                _subjects: JSON.stringify(subjects),
+                _semesterProps: JSON.stringify(semesterProps),
+                _englishProps: JSON.stringify(englishProps),
             });
         } catch (e) {
             next(e);
@@ -224,11 +337,14 @@ class IndexController {
 
     async getChangeCoursePaperInsertPage(req, res, next) {
         try {
+            let { campaign } = req.query;
             let { courses, subjects, semesterProps, englishProps } = resourses;
-            
+            let oneCampaign = await campaignService.get(campaign);
+            oneCampaign = oneCampaign.data;
             res.render('bdt/insert',
                 {
                     courses: courses,
+                    _oneCampaign: JSON.stringify(oneCampaign),
                     _courses: JSON.stringify(courses),
                     _subjects: JSON.stringify(subjects),
                     _semesterProps: JSON.stringify(semesterProps),
@@ -283,6 +399,16 @@ class IndexController {
         }
     }
 
+    async putChangeCoursePaperStudentServiceCancel(request, response, next) {
+        try {
+            const { body, user: { _id, email } } = request;
+            const rs = await changeCoursePaperService.studentServiceUpdateCancel(body, _id);
+            await response.status(rs.statusCode).json(rs);
+        } catch (e) {
+            next(e);
+        }
+    }
+
     async putChangeCoursePaperResult(request, response, next) {
         try {
             const { body, user: { _id, email } } = request;
@@ -297,8 +423,36 @@ class IndexController {
     async putChangeCoursePaperEducationUpdate(request, response, next) {
         try {
             const { body, user: { _id, email } } = request;
-            const rs = await changeCoursePaperService.putChangeCoursePaperEducationUpdate(body, _id);
+            const { id } = request.params;
+            const rs = await changeCoursePaperService.putChangeCoursePaperEducationUpdate(body, id, _id, email);
             await response.status(rs.statusCode).json(rs);
+        } catch (e) {
+            next(e);
+        }
+    }
+
+    async getCampaignPageForEducation(req, res, next) {
+        try {
+            let campaigns = await campaignService.getAll({ limit: 10000, department: 1 });
+            campaigns = campaigns.data;
+            let campaignTypes = config.CAMPAIGN_TYPES.filter(item => item.DEPARTMENT == 1);
+
+            campaigns = campaigns.map(item => {
+                item = {
+                    _id: item._id,
+                    name: item.name,
+                    time: item.time,
+                    createdBy: item.createdBy,
+                    type: item.type == 1 ? 'Chuyển ngành học' : '',
+                }
+                return item;
+            });
+
+            res.render('bdt/campaign',
+                {
+                    campaigns: campaigns,
+                    _campaignTypes: JSON.stringify(campaignTypes),
+                });
         } catch (e) {
             next(e);
         }
@@ -424,7 +578,7 @@ class IndexController {
             {
                 name: "Công nghệ kỹ thuật cơ khí",
                 majors: [
-                    { name: "Công nghệ kỹ thuật cơ khí",}
+                    { name: "Công nghệ kỹ thuật cơ khí", }
                 ],
                 fee: 5600000
             }
@@ -1249,6 +1403,40 @@ class IndexController {
         ]
     }
 
+    getSemFromDate(d = new Date()) {
+        let date = new Date(d);
+        let month = date.getMonth();
+        let year = date.getFullYear().toString().slice(-2,);
+        switch (month) {
+            case 0:
+            case 1:
+            case 2:
+            case 3:
+                return `SU${year}`;
+            case 4:
+            case 5:
+            case 6:
+            case 7:
+                return `FA${year}`;
+            case 8:
+            case 9:
+            case 10:
+            case 11:
+                return `SP${Number(year) + 1}`;
+            default: break;
+        }
+    }
+
+    async downloadPaper(request, response, next) {
+        try {
+            const { id } = request.query;
+            let { semesterProps, englishProps, courses } = resourses;
+            const rs = await changeCoursePaperService.downloadPaper(id, semesterProps, englishProps);
+            await response.status(rs.statusCode).json(rs);
+        } catch (e) {
+            next(e);
+        }
+    }
 
 
 }

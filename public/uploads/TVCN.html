@@ -1200,7 +1200,7 @@ table.a2
 </head>
 
 <body lang=en-VN link=blue vlink=purple style='tab-interval:36.0pt;word-wrap:
-break-word'>
+break-word; width: 98%;'>
 
 <div class=WordSection1>
 
@@ -1239,7 +1239,11 @@ line-height:115%'><o:p>&nbsp;</o:p></span></b></p>
 
 <p class=MsoNormal align=center style='text-align:center;line-height:115%'><b
 style='mso-bidi-font-weight:normal'><span lang=EN-US style='font-size:14.0pt;
-line-height:115%'>PHIẾU ĐỀ NGHỊ CHUYỂN NGÀNH HỌC<o:p></o:p></span></b></p>
+line-height:115%'>{paper_title}<o:p></o:p></span></b></p>
+
+<p class=MsoNormal align=center style='text-align:center;line-height:115%'><b
+style='mso-bidi-font-weight:normal'><span lang=EN-US style='font-size:12.0pt;
+line-height:115%'>{paper_sub_title}<o:p></o:p></span></b></p>
 
 <p class=MsoNormal style='line-height:115%'><span lang=EN-US style='font-size:
 10.5pt;line-height:115%'><o:p>&nbsp;</o:p></span></p>
@@ -1277,19 +1281,11 @@ THÔNG TIN SINH VIÊN<o:p></o:p></span></b></p>
   class=GramE>đến :</span>{requested_course}<span style='mso-tab-count:1'>                                                                 </span><o:p></o:p></span></p>
   <p class=MsoNormal style='text-align:justify;text-indent:37.15pt;tab-stops:
   285.4pt right 464.6pt'><span lang=EN-US style='font-size:10.5pt'>Từ học <span
-  class=GramE>kỳ :</span> {requested_semester}<o:p></o:p></span></p>
+  class=GramE>kỳ :</span> {start_at_semester}<o:p></o:p></span></p>
   <p class=MsoNormal style='text-align:justify;text-indent:37.15pt;tab-stops:
   433.5pt right 464.6pt'><u><span lang=EN-US style='font-size:10.5pt'>Lý <span
   class=GramE>do :</span></span></u><span lang=EN-US style='font-size:10.5pt'>{requested_reason}<span
   style='mso-tab-count:1'>                                                                                               </span><o:p></o:p></span></p>
-  </td>
- </tr>
- <tr style='mso-yfti-irow:1;mso-yfti-lastrow:yes'>
-  <td width=633 valign=top style='width:474.9pt;border:solid black 1.0pt;
-  border-top:none;mso-border-top-alt:solid black .5pt;mso-border-alt:solid black .5pt;
-  padding:0cm 5.75pt 0cm 5.75pt'>
-  <p class=MsoNormal style='text-align:justify;tab-stops:285.4pt'><span
-  lang=EN-US style='font-size:10.5pt'><o:p>&nbsp;</o:p></span></p>
   </td>
  </tr>
 </table>
@@ -1299,9 +1295,9 @@ style='mso-bidi-font-weight:normal'><span lang=EN-US style='font-size:10.5pt'>PH
 2: TƯ VẤN SINH VIÊN<o:p></o:p></span></b></p>
 
 <p class=MsoNormal style='margin-left:18.0pt;line-height:115%'><span
-lang=EN-US style='font-size:10.5pt;line-height:115%'>&#128505; Tiếp nhận<span
-style='mso-tab-count:1'>            </span>◻ Tiếp nhận có điều kiện<span
-style='mso-tab-count:1'>            </span>◻ Không tiếp nhận<o:p></o:p></span></p>
+lang=EN-US style='font-size:10.5pt;line-height:115%'>&#9745; Tiếp nhận<span
+style='mso-tab-count:1'>            </span>&#x25a2; Tiếp nhận có điều kiện<span
+style='mso-tab-count:1'>            </span>&#x25a2; Không tiếp nhận<o:p></o:p></span></p>
 
 <p class=MsoNormal style='margin-top:6.0pt;text-align:justify;line-height:115%;
 tab-stops:right 1.0cm left 304.8pt right 460.7pt'><i style='mso-bidi-font-style:
@@ -1370,15 +1366,14 @@ line-height:115%'>Kế hoạch học tập và học phí tại ngành mới:<o:
   padding:0cm 5.75pt 0cm 5.75pt;height:8.5pt'>
   <p class=MsoNormal align=center style='text-align:center;line-height:115%;
   tab-stops:35.45pt right 467.65pt'><b style='mso-bidi-font-weight:normal'><span
-  lang=EN-US style='font-size:10.5pt;line-height:115%'>Mã môn học lại<o:p></o:p></span></b></p>
+  lang=EN-US style='font-size:10.5pt;line-height:115%'>Mã môn học lại/thi lại<o:p></o:p></span></b></p>
   </td>
   <td width=186 style='width:139.4pt;border:solid black 1.0pt;border-left:none;
   mso-border-left-alt:solid black .5pt;mso-border-alt:solid black .5pt;
   padding:0cm 5.75pt 0cm 5.75pt;height:8.5pt'>
   <p class=MsoNormal align=center style='text-align:center;line-height:115%;
   tab-stops:35.45pt right 467.65pt'><b style='mso-bidi-font-weight:normal'><span
-  lang=EN-US style='font-size:10.5pt;line-height:115%'>Học phí phải nộp<br>
-  (chưa gồm tiền giáo trình)<o:p></o:p></span></b></p>
+  lang=EN-US style='font-size:10.5pt;line-height:115%'>Học phí phải nộp<o:p></o:p></span></b></p>
   </td>
  </tr>
  <tr style='mso-yfti-irow:1;height:8.5pt'>
@@ -1388,7 +1383,7 @@ line-height:115%'>Kế hoạch học tập và học phí tại ngành mới:<o:
   <p class=MsoNormal align=center style='margin-top:6.0pt;margin-right:0cm;
   margin-bottom:6.0pt;margin-left:0cm;text-align:center;line-height:115%;
   tab-stops:35.45pt right 467.65pt'><span lang=EN-US style='font-size:10.5pt;
-  line-height:115%'>1<o:p></o:p></span></p>
+  line-height:115%'>{sem_0}<o:p></o:p></span></p>
   </td>
   <td width=80 style='width:59.7pt;border-top:none;border-left:none;border-bottom:
   solid black 1.0pt;border-right:solid black 1.0pt;mso-border-top-alt:solid black .5pt;
@@ -1435,7 +1430,7 @@ line-height:115%'>Kế hoạch học tập và học phí tại ngành mới:<o:
   <p class=MsoNormal align=center style='margin-top:6.0pt;margin-right:0cm;
   margin-bottom:6.0pt;margin-left:0cm;text-align:center;line-height:115%;
   tab-stops:35.45pt right 467.65pt'><span lang=EN-US style='font-size:10.5pt;
-  line-height:115%'>2<o:p></o:p></span></p>
+  line-height:115%'>{sem_1}<o:p></o:p></span></p>
   </td>
   <td width=80 style='width:59.7pt;border-top:none;border-left:none;border-bottom:
   solid black 1.0pt;border-right:solid black 1.0pt;mso-border-top-alt:solid black .5pt;
@@ -1484,7 +1479,7 @@ line-height:115%'>Kế hoạch học tập và học phí tại ngành mới:<o:
   <p class=MsoNormal align=center style='margin-top:6.0pt;margin-right:0cm;
   margin-bottom:6.0pt;margin-left:0cm;text-align:center;line-height:115%;
   tab-stops:35.45pt right 467.65pt'><span lang=EN-US style='font-size:10.5pt;
-  line-height:115%'>3<o:p></o:p></span></p>
+  line-height:115%'>{sem_2}<o:p></o:p></span></p>
   </td>
   <td width=80 style='width:59.7pt;border-top:none;border-left:none;border-bottom:
   solid black 1.0pt;border-right:solid black 1.0pt;mso-border-top-alt:solid black .5pt;
@@ -1534,7 +1529,7 @@ line-height:115%'>Kế hoạch học tập và học phí tại ngành mới:<o:
   <p class=MsoNormal align=center style='margin-top:6.0pt;margin-right:0cm;
   margin-bottom:6.0pt;margin-left:0cm;text-align:center;line-height:115%;
   tab-stops:35.45pt right 467.65pt'><span lang=EN-US style='font-size:10.5pt;
-  line-height:115%'>4<o:p></o:p></span></p>
+  line-height:115%'>{sem_3}<o:p></o:p></span></p>
   </td>
   <td width=80 style='width:59.7pt;border-top:none;border-left:none;border-bottom:
   solid black 1.0pt;border-right:solid black 1.0pt;mso-border-top-alt:solid black .5pt;
@@ -1584,7 +1579,7 @@ line-height:115%'>Kế hoạch học tập và học phí tại ngành mới:<o:
   <p class=MsoNormal align=center style='margin-top:6.0pt;margin-right:0cm;
   margin-bottom:6.0pt;margin-left:0cm;text-align:center;line-height:115%;
   tab-stops:35.45pt right 467.65pt'><span lang=EN-US style='font-size:10.5pt;
-  line-height:115%'>5<o:p></o:p></span></p>
+  line-height:115%'>{sem_4}<o:p></o:p></span></p>
   </td>
   <td width=80 style='width:59.7pt;border-top:none;border-left:none;border-bottom:
   solid black 1.0pt;border-right:solid black 1.0pt;mso-border-top-alt:solid black .5pt;
@@ -1634,7 +1629,7 @@ line-height:115%'>Kế hoạch học tập và học phí tại ngành mới:<o:
   <p class=MsoNormal align=center style='margin-top:6.0pt;margin-right:0cm;
   margin-bottom:6.0pt;margin-left:0cm;text-align:center;line-height:115%;
   tab-stops:35.45pt right 467.65pt'><span lang=EN-US style='font-size:10.5pt;
-  line-height:115%'>6<o:p></o:p></span></p>
+  line-height:115%'>{sem_5}<o:p></o:p></span></p>
   </td>
   <td width=80 style='width:59.7pt;border-top:none;border-left:none;border-bottom:
   solid black 1.0pt;border-right:solid black 1.0pt;mso-border-top-alt:solid black .5pt;
@@ -1684,7 +1679,7 @@ line-height:115%'>Kế hoạch học tập và học phí tại ngành mới:<o:
   <p class=MsoNormal align=center style='margin-top:6.0pt;margin-right:0cm;
   margin-bottom:6.0pt;margin-left:0cm;text-align:center;line-height:115%;
   tab-stops:35.45pt right 467.65pt'><span lang=EN-US style='font-size:10.5pt;
-  line-height:115%'>7<o:p></o:p></span></p>
+  line-height:115%'>{sem_6}<o:p></o:p></span></p>
   </td>
   <td width=80 style='width:59.7pt;border-top:none;border-left:none;border-bottom:
   solid black 1.0pt;border-right:solid black 1.0pt;mso-border-top-alt:solid black .5pt;
@@ -1729,9 +1724,25 @@ line-height:115%'>Kế hoạch học tập và học phí tại ngành mới:<o:
  </tr>
 </table>
 
+<p class=MsoNormal style='text-align:justify;line-height:115%;tab-stops:right 10.0cm left 304.8pt right 460.7pt'><span
+lang=EN-US style='font-size:1.0pt;line-height:115%'><o:p>&nbsp;</o:p></span></p>
+<p class=MsoNormal style='text-align:justify;tab-stops:right 10.0cm left 304.8pt right 460.7pt'><b
+style='mso-bidi-font-weight:normal'><span lang=EN-US style='font-size:15.5pt; font-weight: bold; color: red; font-style: italic;'>{detail_instruction}<o:p></o:p></span></b></p>
+<p class=MsoNormal style='text-align:justify;line-height:115%;tab-stops:right 10.0cm left 304.8pt right 460.7pt'><span
+lang=EN-US style='font-size:1.0pt;line-height:115%'><o:p>&nbsp;</o:p></span></p>
+
+
+<p class=MsoNormal style='text-align:justify;line-height:115%;tab-stops:right 10.0cm left 304.8pt right 460.7pt'><span
+lang=EN-US style='font-size:1.0pt;line-height:115%'><o:p>&nbsp;</o:p></span></p>
+<p class=MsoNormal style='text-align:justify;tab-stops:right 10.0cm left 304.8pt right 460.7pt'><b
+style='mso-bidi-font-weight:normal'><span lang=EN-US style='font-size:15.5pt; font-weight: bold; color: red; font-style: italic;'>{education_notes}<o:p></o:p></span></b></p>
+<p class=MsoNormal style='text-align:justify;line-height:115%;tab-stops:right 10.0cm left 304.8pt right 460.7pt'><span
+lang=EN-US style='font-size:1.0pt;line-height:115%'><o:p>&nbsp;</o:p></span></p>
+
+
 <p class=MsoNormal style='text-align:justify;line-height:115%;tab-stops:right 10.0cm left 304.8pt right 460.7pt'><b
 style='mso-bidi-font-weight:normal'><span lang=EN-US style='font-size:10.5pt;
-line-height:115%;color:white;mso-color-alt:windowtext'>PHẦN 3: XÁC NHẬN</span></b><b
+line-height:115%;color:black;mso-color-alt:windowtext'>PHẦN 3: XÁC NHẬN</span></b><b
 style='mso-bidi-font-weight:normal'><span lang=EN-US style='font-size:10.5pt;
 line-height:115%'><o:p></o:p></span></b></p>
 
@@ -2017,13 +2028,13 @@ style='mso-special-character:line-break'>
  <li class=MsoNormal style='color:black;text-align:justify;mso-list:l4 level1 lfo4;
      tab-stops:list 36.0pt;vertical-align:baseline'><b><span style='font-size:
      10.5pt;mso-ansi-language:#0C00'>TỔNG PHÍ CẦN ĐÓNG: </span></b><span
-     style='font-size:10.5pt;mso-ansi-language:#0C00'>...................................<b><o:p></o:p></b></span></li>
+     style='font-size:14pt;mso-ansi-language:#0C00; color: red; font-style: italic;'>{tuition}<b><o:p></o:p></b></span></li>
 </ol>
 
 <p class=MsoNormal style='text-align:justify'><b><span style='font-size:10.5pt;
 color:black;mso-ansi-language:#0C00'><span style='mso-tab-count:1'>            </span></span></b><span
-style='font-size:10.5pt;color:black;mso-ansi-language:#0C00'>Hạn chót đóng học
-phí: ……………………………………</span><span style='font-size:12.0pt;color:black;mso-ansi-language:
+style='font-size:14pt;color:black;mso-ansi-language:#0C00; color: red;font-style: italic;'>Hạn chót đóng học
+phí: {tuition_deadline}</span><span style='font-size:12.0pt;color:black;mso-ansi-language:
 #0C00'><o:p></o:p></span></p>
 
 <p class=MsoNormal><span style='font-size:12.0pt;color:black;mso-ansi-language:

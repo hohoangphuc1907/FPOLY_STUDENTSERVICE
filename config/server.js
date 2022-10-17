@@ -44,6 +44,7 @@ hbs.registerHelper('disableButton', utility.disableButton);
 hbs.registerHelper('listVersion', utility.listVersion);
 hbs.registerHelper('checkStatusEducation', utility.checkStatusEducation);
 hbs.registerHelper('formatDateTime', utility.formatDateTime);
+hbs.registerHelper('renderRejoin', utility.renderRejoin);
 const cors = require('cors'),
     // Allow Origins according to your need.
     corsOptions = {

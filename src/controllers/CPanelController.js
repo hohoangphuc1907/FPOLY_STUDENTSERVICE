@@ -58,12 +58,13 @@ class CPanelController {
                             audience: config.GOOGLE_CLIENT_ID
                         });
                         const { name, email, picture } = ticket.getPayload();
-                        let check = email.indexOf(config.FPT_MAIL_ADMIN[0]) === -1;
+                        let check = email.indexOf(config.FPT_MAIL_ADMIN) === -1;
                         
-                        if (!check) {
+                        if (check) {
                             const error = new Error('Vui lòng kiểm tra email');
                             error.statusCode = 422;
                             next(error);
+                            return;
                         }
 
                         let user = await userService.findByEmail(email);
